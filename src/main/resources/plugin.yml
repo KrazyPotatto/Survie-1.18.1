@@ -1,0 +1,26 @@
+name: Survie
+version: '${project.version}'
+main: me.kpotatto.survie.Survie
+api-version: 1.18
+prefix: "Survie 1.18.1"
+authors: [ KrazyPotatto ]
+commands:
+  spawn:
+    description: Téléportation au spawn du monde
+  tpa:
+    description: Envoyer une demande de téléportation à un joueur
+  tpahere:
+    description: Demaander à un joueur de se téléporter à vous
+  tpyes:
+    description: Accepter une demande de téléportation
+  tpaccept:
+    description: Accepter une demaande de téléportation
+  tpno:
+    description: Refuser une demande de téléportation
+  tpdeny:
+    description: Refuser une demande de téléportation
+  ping:
+    description: Obtenir votre ping ou le ping d'un autre joueur
+  soulbound:
+    description: Admin command
+    permission: survie.admin
