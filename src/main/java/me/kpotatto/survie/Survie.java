@@ -3,8 +3,11 @@ package me.kpotatto.survie;
 import me.kpotatto.survie.utils.StartupUtils;
 import me.kpotatto.survie.utils.TeleportationRequest;
 import me.kpotatto.survie.utils.TpaRequest;
+import me.kpotatto.survie.utils.sql.SQLUtils;
+import me.kpotatto.survie.utils.sql.SkillsLoader;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -19,6 +22,9 @@ public final class Survie extends JavaPlugin {
     public CopyOnWriteArrayList<TpaRequest> tpaHereRequests = new CopyOnWriteArrayList<>();
     public HashMap<UUID, Integer> joinMessageID = new HashMap<>();
 
+    private SQLUtils sqlUtils;
+    public SkillsLoader skillsLoader;
+
     private static Survie instance;
 
     @Override
@@ -27,6 +33,8 @@ public final class Survie extends JavaPlugin {
         instance = this;
 
         StartupUtils.startUp(this);
+        sqlUtils = new SQLUtils();
+        skillsLoader = new SkillsLoader(sqlUtils.getConnection()).load();
     }
 
     @Override
