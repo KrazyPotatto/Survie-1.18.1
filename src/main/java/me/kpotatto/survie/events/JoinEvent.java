@@ -28,6 +28,11 @@ public class JoinEvent implements Listener {
         Bukkit.getScheduler().cancelTask(Survie.getInstance().skillsSaveTaskID.get(e.getPlayer().getUniqueId()));
         Survie.getInstance().skillsSaveTaskID.remove(e.getPlayer().getUniqueId());
         Survie.getInstance().skillsLoader.updatePlayer(e.getPlayer().getUniqueId());
+
+        if(!Survie.getInstance().skillsLoader.playerExists(e.getPlayer().getUniqueId()))
+            Survie.getInstance().skillsLoader.createPlayer(e.getPlayer().getUniqueId());
+        BukkitTask taks = Bukkit.getScheduler().runTaskTimer(Survie.getInstance(), new SkillsUpdateRunnable(e.getPlayer()), 300 * 20L, 300 * 20L);
+
     }
 
 }

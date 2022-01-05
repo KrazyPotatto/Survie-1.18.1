@@ -26,6 +26,9 @@ public final class Survie extends JavaPlugin {
     private SQLUtils sqlUtils;
     public SkillsLoader skillsLoader;
 
+    private SQLUtils sqlUtils;
+    public SkillsLoader skillsLoader;
+
     private static Survie instance;
 
     @Override
