@@ -52,6 +52,7 @@ public class SkillsLoader extends SQLLoader{
             sts.setString(1, uuid.toString());
             sts.executeUpdate();
             sts.close();
+            uuidMiningSkillsHashMap.put(uuid, new MiningSkills(0));
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -61,13 +62,15 @@ public class SkillsLoader extends SQLLoader{
     public boolean updatePlayer(UUID uuid) {
         boolean success = false;
         try {
-            PreparedStatement sts = connection.prepareStatement("UPDATE skills SET mining_exp = ?, last_update = ? WHERE uuid = ?");
-            sts.setInt(1, uuidMiningSkillsHashMap.get(uuid).getExperience());
-            sts.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
-            sts.setString(3, uuid.toString());
-            sts.executeUpdate();
-            sts.close();
-            success = true;
+            if(uuidMiningSkillsHashMap.get(uuid) != null) {
+                PreparedStatement sts = connection.prepareStatement("UPDATE skills SET mining_exp = ?, last_update = ? WHERE uuid = ?");
+                sts.setInt(1, uuidMiningSkillsHashMap.get(uuid).getExperience());
+                sts.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+                sts.setString(3, uuid.toString());
+                sts.executeUpdate();
+                sts.close();
+                success = true;
+            }
         }catch (SQLException e){
             e.printStackTrace();
         }

@@ -1,6 +1,7 @@
 package me.kpotatto.survie.events;
 
 import me.kpotatto.survie.enchantments.CustomEnchantments;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -8,6 +9,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Random;
 
 public class EntityDeathEvent implements Listener {
@@ -16,22 +20,51 @@ public class EntityDeathEvent implements Listener {
     public void onEntityDeath(org.bukkit.event.entity.EntityDeathEvent e){
         if(e.getEntity().getKiller() != null){
             Player p = e.getEntity().getKiller();
-            if(p.getInventory().getItemInMainHand() != null && p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.BEHEADING.getEnchantment())){
+            if(p.getInventory().getItemInMainHand() == null || p.getInventory().getItemInMainHand().getItemMeta() == null) return;
+            if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.VAMPIRISM.getEnchantment()))
+                p.setHealth(Math.min(p.getHealth() + 2, p.getMaxHealth()));
+            if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment())){
+                dropItem(e.getEntity().getLocation(), p, e.getDrops());
+                e.getDrops().clear();
+            }
+            if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.BEHEADING.getEnchantment())){
                 Random random = new Random();
                 int r = random.nextInt(20);
-                p.sendMessage("Nombre aléatoire: " + r);
                 if(r != 0) return;
                 // 5% de chance de drop avec succès
                 if(e.getEntity().getType().equals(EntityType.ZOMBIE)){
-                    e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(Material.ZOMBIE_HEAD ,1));
+                    dropItem(e.getEntity().getLocation(), p, new ItemStack(Material.ZOMBIE_HEAD ,1));
                 }else if(e.getEntity().getType().equals(EntityType.SKELETON)){
-                    e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(Material.SKELETON_SKULL ,1));
+                    dropItem(e.getEntity().getLocation(), p, new ItemStack(Material.SKELETON_SKULL ,1));
                 }else if(e.getEntity().getType().equals(EntityType.CREEPER)){
-                    e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(Material.CREEPER_HEAD ,1));
+                    dropItem(e.getEntity().getLocation(), p, new ItemStack(Material.CREEPER_HEAD ,1));
                 }else if(e.getEntity().getType().equals(EntityType.WITHER_SKELETON)){
-                    e.getEntity().getWorld().dropItemNaturally(e.getEntity().getLocation(), new ItemStack(Material.WITHER_SKELETON_SKULL ,1));
+                    dropItem(e.getEntity().getLocation(), p, new ItemStack(Material.WITHER_SKELETON_SKULL ,1));
                 }
             }
+        }
+    }
+
+    private void dropItem(Location location, Player p, ItemStack is){
+        if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment())){
+            HashMap<Integer, ItemStack> remaining = p.getInventory().addItem(is);
+            remaining.values().forEach(dis -> location.getWorld().dropItemNaturally(location, dis));
+        }else{
+            location.getWorld().dropItemNaturally(location, is);
+            p.sendTitle("§cInventaire plein", "§cCertains de vos items ont été drops");
+        }
+    }
+    private void dropItem(Location location, Player p, Collection<ItemStack> iss){
+        if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment())){
+            ArrayList<ItemStack> toDrop = new ArrayList<>();
+            for(ItemStack is: iss){
+                HashMap<Integer, ItemStack> remaining = p.getInventory().addItem(is);
+                toDrop.addAll(remaining.values());
+            }
+            if(!toDrop.isEmpty()) toDrop.forEach(is -> location.getWorld().dropItemNaturally(location, is));
+        }else{
+            iss.forEach(is -> location.getWorld().dropItemNaturally(location, is));
+            p.sendTitle("§cInventaire plein", "§cCertains de vos items ont été drops");
         }
     }
 

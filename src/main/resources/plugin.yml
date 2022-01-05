@@ -21,6 +21,5 @@ commands:
     description: Refuser une demande de téléportation
   ping:
     description: Obtenir votre ping ou le ping d'un autre joueur
-  soulbound:
-    description: Admin command
-    permission: survie.admin
+  wiki:
+    description: Donne un lien vers le wiki

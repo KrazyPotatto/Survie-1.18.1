@@ -7,7 +7,6 @@ import me.kpotatto.survie.utils.sql.SQLUtils;
 import me.kpotatto.survie.utils.sql.SkillsLoader;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -22,9 +21,6 @@ public final class Survie extends JavaPlugin {
     public CopyOnWriteArrayList<TpaRequest> tpaHereRequests = new CopyOnWriteArrayList<>();
     public HashMap<UUID, Integer> joinMessageID = new HashMap<>();
     public HashMap<UUID, Integer> skillsSaveTaskID = new HashMap<>();
-
-    private SQLUtils sqlUtils;
-    public SkillsLoader skillsLoader;
 
     private SQLUtils sqlUtils;
     public SkillsLoader skillsLoader;

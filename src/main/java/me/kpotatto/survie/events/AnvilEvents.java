@@ -26,6 +26,12 @@ public class AnvilEvents implements Listener {
         if(e.getInventory().getSecondItem() != null &&
                 e.getInventory().getSecondItem().getEnchantments().containsKey(CustomEnchantments.BEHEADING.getEnchantment()) &&
                 e.getInventory().getSecondItem().getType().equals(Material.ENCHANTED_BOOK)) addBeheading(e);
+        if(e.getInventory().getSecondItem() != null &&
+                e.getInventory().getSecondItem().getEnchantments().containsKey(CustomEnchantments.VAMPIRISM.getEnchantment()) &&
+                e.getInventory().getSecondItem().getType().equals(Material.ENCHANTED_BOOK)) addVampirism(e);
+        if(e.getInventory().getSecondItem() != null &&
+                e.getInventory().getSecondItem().getEnchantments().containsKey(CustomEnchantments.TELEKINESIS.getEnchantment()) &&
+                e.getInventory().getSecondItem().getType().equals(Material.ENCHANTED_BOOK)) addTelekinesis(e);
         if(e.getInventory().getFirstItem() != null && e.getInventory().getResult() != null) keepCustomEnchantments(e);
 
     }
@@ -36,8 +42,6 @@ public class AnvilEvents implements Listener {
         ItemMeta rm = result.getItemMeta();
         List<Component> lores = rm.lore() == null ? new ArrayList<>() : rm.lore();
         lores.add(Component.text("§r§7Soulbound"));
-        lores.add(Component.text("§r§7Conserver cet item quand vous mourrez"));
-        lores.add(Component.text("§r§e"));
         rm.lore(lores);
         result.setItemMeta(rm);
         result.addEnchantment(CustomEnchantments.SOULBOUND.getEnchantment(), 1);
@@ -51,8 +55,6 @@ public class AnvilEvents implements Listener {
         ItemMeta rm = result.getItemMeta();
         List<Component> lores = rm.lore() == null ? new ArrayList<>() : rm.lore();
         lores.add(Component.text("§r§7Autosmelt"));
-        lores.add(Component.text("§r§7Drop les items cuit des blocs que vous cassez"));
-        lores.add(Component.text("§r§f"));
         rm.lore(lores);
         result.setItemMeta(rm);
         result.addEnchantment(CustomEnchantments.AUTO_SMELT.getEnchantment(), 1);
@@ -66,13 +68,37 @@ public class AnvilEvents implements Listener {
         ItemMeta rm = result.getItemMeta();
         List<Component> lores = rm.lore() == null ? new ArrayList<>() : rm.lore();
         lores.add(Component.text("§r§7Beheading"));
-        lores.add(Component.text("§r§7Ajoute 5% de chance de drop une tête de mob"));
-        lores.add(Component.text("§r§c"));
         rm.lore(lores);
         result.setItemMeta(rm);
         result.addEnchantment(CustomEnchantments.BEHEADING.getEnchantment(), 1);
         e.setResult(result);
         e.getInventory().setRepairCost(25);
+    }
+    private void addVampirism(PrepareAnvilEvent e){
+        if(e.getInventory().getFirstItem() == null) return;
+        ItemStack result = e.getInventory().getFirstItem().clone();
+        if(!ItemUtils.isWeapon(result, true)) return;
+        ItemMeta rm = result.getItemMeta();
+        List<Component> lores = rm.lore() == null ? new ArrayList<>() : rm.lore();
+        lores.add(Component.text("§r§7Vampirisme"));
+        rm.lore(lores);
+        result.setItemMeta(rm);
+        result.addEnchantment(CustomEnchantments.VAMPIRISM.getEnchantment(), 1);
+        e.setResult(result);
+        e.getInventory().setRepairCost(10);
+    }
+    private void addTelekinesis(PrepareAnvilEvent e){
+        if(e.getInventory().getFirstItem() == null) return;
+        ItemStack result = e.getInventory().getFirstItem().clone();
+        if(!ItemUtils.isWeapon(result, true) && !ItemUtils.isTool(result, true)) return;
+        ItemMeta rm = result.getItemMeta();
+        List<Component> lores = rm.lore() == null ? new ArrayList<>() : rm.lore();
+        lores.add(Component.text("§r§7Télékinésie"));
+        rm.lore(lores);
+        result.setItemMeta(rm);
+        result.addEnchantment(CustomEnchantments.TELEKINESIS.getEnchantment(), 1);
+        e.setResult(result);
+        e.getInventory().setRepairCost(10);
     }
     private void keepCustomEnchantments(PrepareAnvilEvent e){
         List<Component> lores = new ArrayList<>();
@@ -82,21 +108,24 @@ public class AnvilEvents implements Listener {
         if(e.getInventory().getFirstItem().getItemMeta().hasEnchant(CustomEnchantments.SOULBOUND.getEnchantment()) || oldLores.contains(Component.text("§r§7Soulbound"))){
             rm.addEnchant(CustomEnchantments.SOULBOUND.getEnchantment(), 1, true);
             lores.add(Component.text("§r§7Soulbound"));
-            lores.add(Component.text("§r§7Conserver cet item quand vous mourrez"));
-            lores.add(Component.text("§r§e"));
         }
         if(e.getInventory().getFirstItem().getItemMeta().hasEnchant(CustomEnchantments.AUTO_SMELT.getEnchantment()) || oldLores.contains(Component.text("§r§7Autosmelt"))){
             rm.addEnchant(CustomEnchantments.AUTO_SMELT.getEnchantment(), 1, true);
             lores.add(Component.text("§r§7Autosmelt"));
-            lores.add(Component.text("§r§7Drop les items cuit des blocs que vous cassez"));
-            lores.add(Component.text("§r§f"));
         }
         if(e.getInventory().getFirstItem().getItemMeta().hasEnchant(CustomEnchantments.BEHEADING.getEnchantment()) || oldLores.contains(Component.text("§r§7Beheading"))){
             rm.addEnchant(CustomEnchantments.BEHEADING.getEnchantment(), 1, true);
             lores.add(Component.text("§r§7Beheading"));
-            lores.add(Component.text("§r§7Ajoute 5% de chance de drop une tête de mob"));
-            lores.add(Component.text("§r§c"));
         }
+        if(e.getInventory().getFirstItem().getItemMeta().hasEnchant(CustomEnchantments.VAMPIRISM.getEnchantment()) || oldLores.contains(Component.text("§r§7Vampirisme"))){
+            rm.addEnchant(CustomEnchantments.VAMPIRISM.getEnchantment(), 1, true);
+            lores.add(Component.text("§r§7Vampirisme"));
+        }
+        if(e.getInventory().getFirstItem().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment()) || oldLores.contains(Component.text("§r§7Télékinésie"))){
+            rm.addEnchant(CustomEnchantments.TELEKINESIS.getEnchantment(), 1, true);
+            lores.add(Component.text("§r§7Télékinésie"));
+        }
+
         rm.lore(lores);
         result.setItemMeta(rm);
         e.setResult(result);

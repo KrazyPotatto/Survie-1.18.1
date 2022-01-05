@@ -2,8 +2,10 @@ package me.kpotatto.survie.events;
 
 import me.kpotatto.survie.enchantments.CustomEnchantments;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -11,9 +13,7 @@ import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Optional;
+import java.util.*;
 
 public class BlockPlaceEvent implements Listener {
 
@@ -54,12 +54,42 @@ public class BlockPlaceEvent implements Listener {
                 if(furnaceRecipe.isPresent()){
                     ItemStack result = furnaceRecipe.get();
                     result.setAmount(is.getAmount());
-                    e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), result);
+                    dropItem(e.getBlock().getLocation(), e.getPlayer(), result);
                 }else{
-                    e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), is);
+                    dropItem(e.getBlock().getLocation(), e.getPlayer(), is);
                 }
             }
             e.setDropItems(false);
+            return;
+        }
+
+        //IF HAS TELEPATHY
+        if(e.getPlayer().getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment())){
+            dropItem(e.getBlock().getLocation(), e.getPlayer(), e.getBlock().getDrops(e.getPlayer().getInventory().getItemInMainHand(), e.getPlayer()));
+            e.setDropItems(false);
+        }
+    }
+
+    private void dropItem(Location location, Player p, ItemStack is){
+        if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment())){
+            HashMap<Integer, ItemStack> remaining = p.getInventory().addItem(is);
+            remaining.values().forEach(dis -> location.getWorld().dropItemNaturally(location, dis));
+        }else{
+            location.getWorld().dropItemNaturally(location, is);
+            p.sendTitle("§cInventaire plein", "§cCertains de vos items ont été drops");
+        }
+    }
+    private void dropItem(Location location, Player p, Collection<ItemStack> iss){
+        if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment())){
+            ArrayList<ItemStack> toDrop = new ArrayList<>();
+            for(ItemStack is: iss){
+                HashMap<Integer, ItemStack> remaining = p.getInventory().addItem(is);
+                toDrop.addAll(remaining.values());
+            }
+            if(!toDrop.isEmpty()) toDrop.forEach(is -> location.getWorld().dropItemNaturally(location, is));
+        }else{
+            iss.forEach(is -> location.getWorld().dropItemNaturally(location, is));
+            p.sendTitle("§cInventaire plein", "§cCertains de vos items ont été drops");
         }
     }
 

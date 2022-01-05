@@ -16,8 +16,6 @@ public class ItemUtils {
         is.addEnchantment(CustomEnchantments.SOULBOUND.getEnchantment(), 1);
         List<Component> lores = new ArrayList<>();
         lores.add(Component.text("§r§7Soulbound"));
-        lores.add(Component.text("§r§7Conserver cet item quand vous mourrez"));
-        lores.add(Component.text("§r§e"));
         ItemMeta im = is.getItemMeta();
         im.lore(lores);
         is.setItemMeta(im);
@@ -29,8 +27,6 @@ public class ItemUtils {
         is.addEnchantment(CustomEnchantments.AUTO_SMELT.getEnchantment(), 1);
         List<Component> lores = new ArrayList<>();
         lores.add(Component.text("§r§7Autosmelt"));
-        lores.add(Component.text("§r§7Drop les items cuit des blocs que vous cassez"));
-        lores.add(Component.text("§r§f"));
         ItemMeta im = is.getItemMeta();
         im.lore(lores);
         is.setItemMeta(im);
@@ -42,8 +38,28 @@ public class ItemUtils {
         is.addEnchantment(CustomEnchantments.BEHEADING.getEnchantment(), 1);
         List<Component> lores = new ArrayList<>();
         lores.add(Component.text("§r§7Beheading"));
-        lores.add(Component.text("§r§7Ajoute 5% de chance de drop une tête de mob"));
-        lores.add(Component.text("§r§c"));
+        ItemMeta im = is.getItemMeta();
+        im.lore(lores);
+        is.setItemMeta(im);
+        return is;
+    }
+
+    public static ItemStack vampirismBook(){
+        ItemStack is = new ItemStack(Material.ENCHANTED_BOOK);
+        is.addEnchantment(CustomEnchantments.VAMPIRISM.getEnchantment(), 1);
+        List<Component> lores = new ArrayList<>();
+        lores.add(Component.text("§r§7Vampirisme"));
+        ItemMeta im = is.getItemMeta();
+        im.lore(lores);
+        is.setItemMeta(im);
+        return is;
+    }
+
+    public static ItemStack telekinesisBook(){
+        ItemStack is = new ItemStack(Material.ENCHANTED_BOOK);
+        is.addEnchantment(CustomEnchantments.TELEKINESIS.getEnchantment(), 1);
+        List<Component> lores = new ArrayList<>();
+        lores.add(Component.text("§r§7Télékinésie"));
         ItemMeta im = is.getItemMeta();
         im.lore(lores);
         is.setItemMeta(im);

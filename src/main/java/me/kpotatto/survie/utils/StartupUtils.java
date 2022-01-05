@@ -38,7 +38,7 @@ public class StartupUtils {
         pl.getCommand("tpno").setExecutor(new TpNoCommand());
         pl.getCommand("tpdeny").setExecutor(new TpNoCommand());
         pl.getCommand("ping").setExecutor(new PingCommand());
-        pl.getCommand("soulbound").setExecutor(new SoulboundCommand());
+        pl.getCommand("wiki").setExecutor(new WikiCommand());
     }
 
     private static void registerRunnables(JavaPlugin pl){
@@ -49,12 +49,16 @@ public class StartupUtils {
         registerEnchantment(CustomEnchantments.SOULBOUND.getEnchantment());
         registerEnchantment(CustomEnchantments.AUTO_SMELT.getEnchantment());
         registerEnchantment(CustomEnchantments.BEHEADING.getEnchantment());
+        registerEnchantment(CustomEnchantments.VAMPIRISM.getEnchantment());
+        registerEnchantment(CustomEnchantments.TELEKINESIS.getEnchantment());
     }
 
     public static void shutDown(){
         unregisterEnchantment(CustomEnchantments.SOULBOUND.getEnchantment());
         unregisterEnchantment(CustomEnchantments.AUTO_SMELT.getEnchantment());
         unregisterEnchantment(CustomEnchantments.BEHEADING.getEnchantment());
+        unregisterEnchantment(CustomEnchantments.VAMPIRISM.getEnchantment());
+        unregisterEnchantment(CustomEnchantments.TELEKINESIS.getEnchantment());
     }
 
     private static void registerEnchantment(Enchantment enchantment){
