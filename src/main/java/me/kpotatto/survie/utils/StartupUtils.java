@@ -39,6 +39,8 @@ public class StartupUtils {
         pl.getCommand("tpdeny").setExecutor(new TpNoCommand());
         pl.getCommand("ping").setExecutor(new PingCommand());
         pl.getCommand("wiki").setExecutor(new WikiCommand());
+        pl.getCommand("toggleactionbar").setExecutor(new ToggleActionBarCommand());
+        pl.getCommand("skills").setExecutor(new SkillsCommand());
     }
 
     private static void registerRunnables(JavaPlugin pl){

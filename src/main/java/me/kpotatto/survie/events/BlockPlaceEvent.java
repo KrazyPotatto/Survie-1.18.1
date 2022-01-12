@@ -1,14 +1,15 @@
 package me.kpotatto.survie.events;
 
+import me.kpotatto.survie.Survie;
 import me.kpotatto.survie.enchantments.CustomEnchantments;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -19,32 +20,79 @@ public class BlockPlaceEvent implements Listener {
 
     @EventHandler
     public void onBlockPlace(org.bukkit.event.block.BlockPlaceEvent e){
-        if(e.getBlockPlaced().getLocation().getWorld().getEnvironment().equals(World.Environment.NETHER) && e.getBlockPlaced().getLocation().getY() < 128){
-            if(e.getBlockPlaced().getType().equals(Material.BLACK_BED) ||
-                e.getBlockPlaced().getType().equals(Material.BLUE_BED) ||
-                e.getBlockPlaced().getType().equals(Material.BROWN_BED) ||
-                e.getBlockPlaced().getType().equals(Material.CYAN_BED) ||
-                e.getBlockPlaced().getType().equals(Material.GRAY_BED) ||
-                e.getBlockPlaced().getType().equals(Material.GREEN_BED) ||
-                e.getBlockPlaced().getType().equals(Material.LIGHT_BLUE_BED) ||
-                e.getBlockPlaced().getType().equals(Material.LIGHT_GRAY_BED) ||
-                e.getBlockPlaced().getType().equals(Material.LIME_BED) ||
-                e.getBlockPlaced().getType().equals(Material.MAGENTA_BED) ||
-                e.getBlockPlaced().getType().equals(Material.ORANGE_BED) ||
-                e.getBlockPlaced().getType().equals(Material.PINK_BED) ||
-                e.getBlockPlaced().getType().equals(Material.PURPLE_BED) ||
-                e.getBlockPlaced().getType().equals(Material.RED_BED) ||
-                e.getBlockPlaced().getType().equals(Material.WHITE_BED) ||
-                e.getBlockPlaced().getType().equals(Material.YELLOW_BED) ||
-                e.getBlockPlaced().getType().equals(Material.TNT)){
-                e.getPlayer().sendMessage("§6Build §7>> §4Erreur §7> §cVous ne pouvez pas poser de lit ou de TnT dans le nether");
-                e.setCancelled(true);
-            }
+        switch (e.getBlock().getType()){
+            case DIAMOND_ORE:
+            case ANCIENT_DEBRIS:
+            case IRON_ORE:
+            case GOLD_ORE:
+            case COAL_ORE:
+            case COPPER_ORE:
+            case DEEPSLATE_COAL_ORE:
+            case DEEPSLATE_COPPER_ORE:
+            case DEEPSLATE_DIAMOND_ORE:
+            case DEEPSLATE_EMERALD_ORE:
+            case DEEPSLATE_GOLD_ORE:
+            case DEEPSLATE_IRON_ORE:
+            case DEEPSLATE_LAPIS_ORE:
+            case DEEPSLATE_REDSTONE_ORE:
+            case EMERALD_ORE:
+            case LAPIS_ORE:
+            case NETHER_GOLD_ORE:
+            case NETHER_QUARTZ_ORE:
+            case REDSTONE_ORE:
+                Survie.getInstance().placeBlock.add(e.getBlock().getLocation());
+                break;
+            default:
+                break;
         }
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e){
+        if(!Survie.getInstance().placeBlock.contains(e.getBlock().getLocation())){
+            int exp = 0;
+            switch (e.getBlock().getType()){
+                case DIAMOND_ORE:
+                case DEEPSLATE_DIAMOND_ORE:
+                    exp = 300;
+                    break;
+                case DEEPSLATE_EMERALD_ORE:
+                case EMERALD_ORE:
+                    exp = 400;
+                    break;
+                case ANCIENT_DEBRIS:
+                    exp = 550;
+                    break;
+                case IRON_ORE:
+                case GOLD_ORE:
+                case DEEPSLATE_GOLD_ORE:
+                case DEEPSLATE_IRON_ORE:
+                    exp = 200;
+                    break;
+                case COAL_ORE:
+                case COPPER_ORE:
+                case DEEPSLATE_COAL_ORE:
+                case DEEPSLATE_COPPER_ORE:
+                case DEEPSLATE_LAPIS_ORE:
+                case LAPIS_ORE:
+                case NETHER_QUARTZ_ORE:
+                    exp = 50;
+                    break;
+                case DEEPSLATE_REDSTONE_ORE:
+                case REDSTONE_ORE:
+                    exp = 25;
+                    break;
+                case NETHER_GOLD_ORE:
+                    exp = 10;
+                default:
+                    Survie.getInstance().skillsLoader.uuidMiningSkillsHashMap.get(e.getPlayer().getUniqueId()).addExperience();
+                    break;
+            }
+            if(exp > 0) Survie.getInstance().skillsLoader.uuidMiningSkillsHashMap.get(e.getPlayer().getUniqueId()).addExperience(exp);
+        }else{
+            Survie.getInstance().placeBlock.remove(e.getBlock().getLocation());
+        }
+
         //HAS AUTOSMELT ITEM IN HAND
         if(e.getPlayer().getInventory().getItemInMainHand().getItemMeta() == null) return;
         if(e.getPlayer().getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.AUTO_SMELT.getEnchantment())){
@@ -55,18 +103,19 @@ public class BlockPlaceEvent implements Listener {
                     ItemStack result = furnaceRecipe.get();
                     result.setAmount(is.getAmount());
                     dropItem(e.getBlock().getLocation(), e.getPlayer(), result);
-                }else{
-                    dropItem(e.getBlock().getLocation(), e.getPlayer(), is);
+                    e.setDropItems(false);
                 }
             }
-            e.setDropItems(false);
-            return;
         }
+    }
 
+    @EventHandler
+    public void onBlockBreakItemDrop(BlockDropItemEvent e){
         //IF HAS TELEPATHY
+        if(e.getPlayer().getInventory().getItemInMainHand().getItemMeta() == null) return;
         if(e.getPlayer().getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment())){
-            dropItem(e.getBlock().getLocation(), e.getPlayer(), e.getBlock().getDrops(e.getPlayer().getInventory().getItemInMainHand(), e.getPlayer()));
-            e.setDropItems(false);
+            dropItem(e.getBlock().getLocation(), e.getPlayer(), e.getItems());
+            e.setCancelled(true);
         }
     }
 
@@ -74,22 +123,34 @@ public class BlockPlaceEvent implements Listener {
         if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment())){
             HashMap<Integer, ItemStack> remaining = p.getInventory().addItem(is);
             remaining.values().forEach(dis -> location.getWorld().dropItemNaturally(location, dis));
+            if(!remaining.isEmpty() && !Survie.getInstance().disabledActionBar.contains(p.getUniqueId()))
+                p.sendActionBar("§cInventaire plein! §cCertains de vos items ont été drops");;
         }else{
             location.getWorld().dropItemNaturally(location, is);
-            p.sendTitle("§cInventaire plein", "§cCertains de vos items ont été drops");
         }
     }
-    private void dropItem(Location location, Player p, Collection<ItemStack> iss){
+    private void dropItem(Location location, Player p, Item is){
+        if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment())){
+            HashMap<Integer, ItemStack> remaining = p.getInventory().addItem(is.getItemStack());
+            remaining.values().forEach(dis -> location.getWorld().dropItemNaturally(location, dis));
+            if(!remaining.isEmpty() && !Survie.getInstance().disabledActionBar.contains(p.getUniqueId()))
+                p.sendActionBar("§cInventaire plein! §cCertains de vos items ont été drops");;
+        }else{
+            location.getWorld().dropItemNaturally(location, is.getItemStack());
+        }
+    }
+    private void dropItem(Location location, Player p, Collection<Item> iss){
         if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment())){
             ArrayList<ItemStack> toDrop = new ArrayList<>();
-            for(ItemStack is: iss){
-                HashMap<Integer, ItemStack> remaining = p.getInventory().addItem(is);
+            for(Item is: iss){
+                HashMap<Integer, ItemStack> remaining = p.getInventory().addItem(is.getItemStack());
                 toDrop.addAll(remaining.values());
             }
             if(!toDrop.isEmpty()) toDrop.forEach(is -> location.getWorld().dropItemNaturally(location, is));
+            if(!toDrop.isEmpty() && !Survie.getInstance().disabledActionBar.contains(p.getUniqueId()))
+                p.sendActionBar("§cInventaire plein! §cCertains de vos items ont été drops");
         }else{
-            iss.forEach(is -> location.getWorld().dropItemNaturally(location, is));
-            p.sendTitle("§cInventaire plein", "§cCertains de vos items ont été drops");
+            iss.forEach(is -> location.getWorld().dropItemNaturally(location, is.getItemStack()));
         }
     }
 

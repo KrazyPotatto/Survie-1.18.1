@@ -10,7 +10,7 @@ public class SQLUtils {
 
     public SQLUtils(){
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://172.17.0.1/s10_survie", "u10_Z19088EVUC", "nfLDA0s5ji7Jgbk^hXFmKVYJ");
+            connection = DriverManager.getConnection("jdbc:mysql://172.17.0.1/s10_survie?autoReconnect=true", "u10_Z19088EVUC", "nfLDA0s5ji7Jgbk^hXFmKVYJ");
         } catch (SQLException e) {
             e.printStackTrace();
         }

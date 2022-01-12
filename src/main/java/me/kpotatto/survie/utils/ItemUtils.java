@@ -67,7 +67,9 @@ public class ItemUtils {
     }
 
     public static boolean isWeapon(ItemStack is, boolean axe){
-        return is.getType().toString().contains("SWORD") || (
+        return is.getType().toString().contains("SWORD") ||
+                is.getType().equals(Material.BOW) ||
+                is.getType().equals(Material.CROSSBOW)|| (
                 is.getType().toString().contains("AXE") && !is.getType().toString().contains("PICKAXE") && axe
                 );
     }

@@ -1,6 +1,8 @@
 package me.kpotatto.survie.utils.sql;
 
+import me.kpotatto.survie.skills.FightingSkills;
 import me.kpotatto.survie.skills.MiningSkills;
+import org.bukkit.Bukkit;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -9,6 +11,7 @@ import java.util.UUID;
 public class SkillsLoader extends SQLLoader{
 
     public HashMap<UUID, MiningSkills> uuidMiningSkillsHashMap = new HashMap<>();
+    public HashMap<UUID, FightingSkills> uuidFightingSkillsHashMap = new HashMap<>();
 
     public SkillsLoader(Connection connection) {
         super(connection);
@@ -16,13 +19,15 @@ public class SkillsLoader extends SQLLoader{
     }
 
     @Override
-    public SkillsLoader load() {
+    protected SkillsLoader load() {
         try {
             ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM skills");
             while (rs.next()) {
-                uuidMiningSkillsHashMap.put(UUID.fromString(rs.getString(1)), new MiningSkills(rs.getInt(2)));
+                uuidMiningSkillsHashMap.put(UUID.fromString(rs.getString(1)), new MiningSkills(rs.getInt(2), Bukkit.getOfflinePlayer(UUID.fromString(rs.getString(1)))));
+                uuidFightingSkillsHashMap.put(UUID.fromString(rs.getString(1)), new FightingSkills(rs.getInt(3), Bukkit.getOfflinePlayer(UUID.fromString(rs.getString(1)))));
             }
             System.out.println("Loaded " + uuidMiningSkillsHashMap.size() + " user mining skills from database");
+            System.out.println("Loaded " + uuidFightingSkillsHashMap.size() + " user fighting skills from database");
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -52,7 +57,8 @@ public class SkillsLoader extends SQLLoader{
             sts.setString(1, uuid.toString());
             sts.executeUpdate();
             sts.close();
-            uuidMiningSkillsHashMap.put(uuid, new MiningSkills(0));
+            uuidMiningSkillsHashMap.put(uuid, new MiningSkills(0, Bukkit.getOfflinePlayer(uuid)));
+            uuidFightingSkillsHashMap.put(uuid, new FightingSkills(0, Bukkit.getOfflinePlayer(uuid)));
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -63,10 +69,11 @@ public class SkillsLoader extends SQLLoader{
         boolean success = false;
         try {
             if(uuidMiningSkillsHashMap.get(uuid) != null) {
-                PreparedStatement sts = connection.prepareStatement("UPDATE skills SET mining_exp = ?, last_update = ? WHERE uuid = ?");
+                PreparedStatement sts = connection.prepareStatement("UPDATE skills SET mining_exp = ?, fighting_exp = ?, last_update = ? WHERE uuid = ?");
                 sts.setInt(1, uuidMiningSkillsHashMap.get(uuid).getExperience());
-                sts.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
-                sts.setString(3, uuid.toString());
+                sts.setInt(2, uuidFightingSkillsHashMap.get(uuid).getExperience());
+                sts.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+                sts.setString(4, uuid.toString());
                 sts.executeUpdate();
                 sts.close();
                 success = true;

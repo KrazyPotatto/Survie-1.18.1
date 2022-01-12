@@ -1,5 +1,6 @@
 package me.kpotatto.survie.events;
 
+import me.kpotatto.survie.Survie;
 import me.kpotatto.survie.enchantments.CustomEnchantments;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,6 +21,42 @@ public class EntityDeathEvent implements Listener {
     public void onEntityDeath(org.bukkit.event.entity.EntityDeathEvent e){
         if(e.getEntity().getKiller() != null){
             Player p = e.getEntity().getKiller();
+
+            // EXPÉRIENCE
+            int exp = 0;
+            switch (e.getEntityType()){
+                case ENDER_DRAGON:
+                    exp = 5000;
+                    break;
+                case WITHER:
+                    exp = 2000;
+                    break;
+                case ELDER_GUARDIAN:
+                    exp = 1250;
+                    break;
+                case ENDERMAN:
+                case RAVAGER:
+                case PILLAGER:
+                case VEX:
+                case EVOKER:
+                case VINDICATOR:
+                case ILLUSIONER:
+                case EVOKER_FANGS:
+                    exp = 1;
+                    break;
+                case MINECART:
+                case ARMOR_STAND:
+                case MINECART_TNT:
+                case MINECART_CHEST:
+                case MINECART_FURNACE:
+                case MINECART_HOPPER:
+                    exp = 0;
+                default:
+                    exp = 10;
+            }
+            Survie.getInstance().skillsLoader.uuidFightingSkillsHashMap.get(p.getUniqueId()).addExperience(exp);
+
+            //Enchantements Custom
             if(p.getInventory().getItemInMainHand() == null || p.getInventory().getItemInMainHand().getItemMeta() == null) return;
             if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.VAMPIRISM.getEnchantment()))
                 p.setHealth(Math.min(p.getHealth() + 2, p.getMaxHealth()));
@@ -49,9 +86,9 @@ public class EntityDeathEvent implements Listener {
         if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment())){
             HashMap<Integer, ItemStack> remaining = p.getInventory().addItem(is);
             remaining.values().forEach(dis -> location.getWorld().dropItemNaturally(location, dis));
+            if(!remaining.isEmpty() && !Survie.getInstance().disabledActionBar.contains(p.getUniqueId())) p.sendActionBar("§cInventaire plein! §cCertains de vos items ont été drops");
         }else{
             location.getWorld().dropItemNaturally(location, is);
-            p.sendTitle("§cInventaire plein", "§cCertains de vos items ont été drops");
         }
     }
     private void dropItem(Location location, Player p, Collection<ItemStack> iss){
@@ -62,9 +99,9 @@ public class EntityDeathEvent implements Listener {
                 toDrop.addAll(remaining.values());
             }
             if(!toDrop.isEmpty()) toDrop.forEach(is -> location.getWorld().dropItemNaturally(location, is));
+            if(!toDrop.isEmpty() && !Survie.getInstance().disabledActionBar.contains(p.getUniqueId())) p.sendActionBar("§cInventaire plein! §cCertains de vos items ont été drops");
         }else{
             iss.forEach(is -> location.getWorld().dropItemNaturally(location, is));
-            p.sendTitle("§cInventaire plein", "§cCertains de vos items ont été drops");
         }
     }
 

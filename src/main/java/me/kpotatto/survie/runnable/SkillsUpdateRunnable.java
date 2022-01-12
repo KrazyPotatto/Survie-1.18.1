@@ -2,24 +2,30 @@ package me.kpotatto.survie.runnable;
 
 import me.kpotatto.survie.Survie;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public class SkillsUpdateRunnable implements Runnable{
+import java.util.UUID;
 
-    private Player p;
+public class SkillsUpdateRunnable extends BukkitRunnable {
+
+    private UUID uuid;
 
     public SkillsUpdateRunnable(Player p){
-        this.p = p;
+        this.uuid = p.getUniqueId();
     }
 
     @Override
     public void run() {
-        p.sendActionBar(Component.text("§6Tentative de sauvegarde de vos données de jeu"));
-        if(Survie.getInstance().skillsLoader.updatePlayer(p.getUniqueId())){
-            p.sendActionBar(Component.text("§aVos données de jeu ont été sauvegardé avec succès!"));
-        }else{
-            p.sendActionBar(Component.text("§cUne erreur est survenu lors de la sauvegarde de vos données de jeu"));
+        if(Bukkit.getPlayer(uuid) == null || !Survie.getInstance().skillsSaveTaskID.containsValue(this.getTaskId())){
+            this.cancel();
+            System.out.println("In task: Canceled skills save task for player " + Bukkit.getOfflinePlayer(uuid).getName()+":"+uuid.toString());
+            return;
         }
+        boolean send = !Survie.getInstance().disabledActionBar.contains(uuid);
+        Survie.getInstance().skillsLoader.updatePlayer(uuid);
+        if(send) Bukkit.getPlayer(uuid).sendActionBar(Component.text("§aVos données de jeu ont été sauvegardé avec succès!"));
     }
 
 }

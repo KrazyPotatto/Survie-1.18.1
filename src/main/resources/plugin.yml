@@ -23,3 +23,7 @@ commands:
     description: Obtenir votre ping ou le ping d'un autre joueur
   wiki:
     description: Donne un lien vers le wiki
+  toggleactionbar:
+    description: Toggles les messages en action bar
+  skills:
+    description: Montre votre progression dans les skills
