@@ -1,11 +1,6 @@
 package me.kpotatto.survie.utils.sql;
 
-import me.kpotatto.survie.skills.FightingSkills;
-import me.kpotatto.survie.skills.MiningSkills;
-import org.bukkit.Bukkit;
-
 import java.sql.*;
-import java.util.HashMap;
 import java.util.UUID;
 
 public class IpLogger{
@@ -56,5 +51,9 @@ public class IpLogger{
             e.printStackTrace();
         }
         return success;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 }

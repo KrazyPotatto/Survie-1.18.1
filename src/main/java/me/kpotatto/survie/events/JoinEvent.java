@@ -4,21 +4,19 @@ import me.kpotatto.survie.Survie;
 import me.kpotatto.survie.runnable.SkillsUpdateRunnable;
 import me.kpotatto.survie.utils.sql.IpLogger;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.scoreboard.Scoreboard;
 
 public class JoinEvent implements Listener {
 
     @EventHandler
     public void onPreLogin(AsyncPlayerPreLoginEvent e){
+        Survie.getInstance().sqlUtils.checkConnection();
         IpLogger ipLogger = Survie.getInstance().ipLogger;
         if(ipLogger.playerExists(e.getUniqueId())){
             ipLogger.updatePlayer(e.getUniqueId(), e.getAddress().getHostAddress());

@@ -28,7 +28,7 @@ public final class Survie extends JavaPlugin {
     public HashMap<UUID, Integer> joinMessageID = new HashMap<>();
     public HashMap<UUID, Integer> skillsSaveTaskID = new HashMap<>();
 
-    private SQLUtils sqlUtils;
+    public SQLUtils sqlUtils;
     public SkillsLoader skillsLoader;
     public IpLogger ipLogger;
 

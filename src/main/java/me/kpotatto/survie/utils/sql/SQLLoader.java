@@ -12,6 +12,10 @@ public abstract class SQLLoader {
         this.connection = connection;
     }
 
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
     protected abstract SkillsLoader load();
     public abstract boolean playerExists(UUID uuid);
     public abstract void createPlayer(UUID uuid);
