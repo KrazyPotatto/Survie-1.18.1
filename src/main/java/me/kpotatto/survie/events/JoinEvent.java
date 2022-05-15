@@ -19,9 +19,9 @@ public class JoinEvent implements Listener {
         Survie.getInstance().sqlUtils.checkConnection();
         IpLogger ipLogger = Survie.getInstance().ipLogger;
         if(ipLogger.playerExists(e.getUniqueId())){
-            ipLogger.updatePlayer(e.getUniqueId(), e.getAddress().getHostAddress());
+            ipLogger.updatePlayer(e.getUniqueId(), e.getAddress().getHostAddress(), true);
         }else{
-            ipLogger.createPlayer(e.getUniqueId(), e.getAddress().getHostAddress());
+            ipLogger.createPlayer(e.getUniqueId(), e.getAddress().getHostAddress(), true);
         }
     }
 
@@ -46,6 +46,7 @@ public class JoinEvent implements Listener {
         }
         Survie.getInstance().skillsSaveTaskID.remove(e.getPlayer().getUniqueId());
         Survie.getInstance().skillsLoader.updatePlayer(e.getPlayer().getUniqueId());
+        Survie.getInstance().ipLogger.setOnline(e.getPlayer().getUniqueId(), false);
 
     }
 

@@ -26,11 +26,12 @@ public class IpLogger{
         return exists;
     }
 
-    public void createPlayer(UUID uuid, String ip) {
+    public void createPlayer(UUID uuid, String ip, boolean online) {
         try {
-            PreparedStatement sts = connection.prepareStatement("INSERT INTO uuid_id (uuid, ip_addr) VALUES(?, ?)");
+            PreparedStatement sts = connection.prepareStatement("INSERT INTO uuid_id (uuid, ip_addr, online) VALUES(?, ?, ?)");
             sts.setString(1, uuid.toString());
             sts.setString(2, ip);
+            sts.setBoolean(3, online);
             sts.executeUpdate();
             sts.close();
         }catch (SQLException e){
@@ -38,16 +39,32 @@ public class IpLogger{
         }
     }
 
-    public boolean updatePlayer(UUID uuid, String ip) {
+    public boolean updatePlayer(UUID uuid, String ip, boolean online) {
         boolean success = false;
         try {
-                PreparedStatement sts = connection.prepareStatement("UPDATE uuid_id SET ip_addr = ? WHERE uuid = ?");
+                PreparedStatement sts = connection.prepareStatement("UPDATE uuid_id SET ip_addr = ?, online = ? WHERE uuid = ?");
                 sts.setString(1, ip);
-                sts.setString(2, uuid.toString());
+                sts.setBoolean(2, online);
+                sts.setString(3, uuid.toString());
                 sts.executeUpdate();
                 sts.close();
                 success = true;
         }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return success;
+    }
+
+    public boolean setOnline(UUID uuid, boolean online){
+        boolean success = false;
+        try{
+            PreparedStatement sts = connection.prepareStatement("UPDATE uuid_id SET online = ? WHERE uuid = ?");
+            sts.setBoolean(1, online);
+            sts.setString(2, uuid.toString());
+            sts.executeUpdate();
+            sts.close();
+            success = true;
+        } catch (SQLException e){
             e.printStackTrace();
         }
         return success;
