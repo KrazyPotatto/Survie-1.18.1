@@ -27,3 +27,6 @@ commands:
     description: Toggles les messages en action bar
   skills:
     description: Montre votre progression dans les skills
+  lc:
+    description: Verrouiller un coffre
+    aliases: ['alc', 'lockchest', 'autolockchest']
