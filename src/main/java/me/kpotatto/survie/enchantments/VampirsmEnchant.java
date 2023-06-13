@@ -20,7 +20,7 @@ public class VampirsmEnchant extends CustomEnchantmentWrapper{
 
     @Override
     public @NotNull String getName() {
-        return "vampirism";
+        return "Vampirism";
     }
 
     @Override

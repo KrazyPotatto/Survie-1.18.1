@@ -29,7 +29,7 @@ public class SkillsCommand implements CommandExecutor {
         int expNextLvlFighting = fightingSkills.expForLevel(fightingSkills.getLevel() + 1) - fightingSkills.expForLevel(fightingSkills.getLevel());
 
         p.sendMessage("§6=================================================");
-        p.sendMessage("§aMinage (Niv. " + miningSkills.getLevel() + "): " + expLvlMining + "/" + expNextLvlMining);
+        p.sendMessage("§aMining (Niv. " + miningSkills.getLevel() + "): " + expLvlMining + "/" + expNextLvlMining);
         p.sendMessage("§aCombat (Niv. " + fightingSkills.getLevel() + "): " + expLvlFighting + "/" + expNextLvlFighting);
         p.sendMessage("§6=================================================");
 

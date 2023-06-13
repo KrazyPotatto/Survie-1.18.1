@@ -35,7 +35,7 @@ public class TeleportationRequest {
                lastLocation.getY() == player.getLocation().getY()){
             return false;
         }
-        player.sendMessage("§6TP §7>> §4Erreur §7> §cVotre téléportation a été annulée, car vous avez bougé.");
+        player.sendMessage("§6TP §7>> §4Error §7> §cYour teleportation request was cancelled because you moved.");
         return true;
     }
 

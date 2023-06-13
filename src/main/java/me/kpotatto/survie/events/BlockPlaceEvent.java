@@ -30,9 +30,9 @@ public class BlockPlaceEvent implements Listener {
                 addChest(block, e.getPlayer());
                 if(!Survie.getInstance().autoLockingChest.contains(e.getPlayer().getUniqueId())){
                     Survie.getInstance().lockingChestPlayers.remove(e.getPlayer().getUniqueId());
-                    e.getPlayer().sendMessage("§6Lock Chest §7>> §1Info §7> §9Ce coffre est désormais protégé, car vous étiez en mode protection de coffre. Il a été désactivé.");
+                    e.getPlayer().sendMessage("§6Lock Chest §7>> §1Info §7> §9This chest is now protected because you were it chest protection mode, which has been disabled.");
                 }else {
-                    e.getPlayer().sendMessage("§6Lock Chest §7>> §1Info §7> §9Ce coffre est désormais protégé, car vous étiez en mode protection de coffre. Vous êtes en mode automatique.");
+                    e.getPlayer().sendMessage("§6Lock Chest §7>> §1Info §7> §9This chest is now protected because you were it chest protection mode. You are still in chest protection mode, because automatic mod is enabled.");
                 }
             }
             return;
@@ -82,20 +82,22 @@ public class BlockPlaceEvent implements Listener {
                             Survie.getInstance().getLockedChests().containsChest(_double.getLocation()))
                             can = isChestOwner(block, e.getPlayer()) || isChestOwner(_double, e.getPlayer());
                     }
+                } else {
+                    if(Survie.getInstance().getLockedChests().containsChest(block.getLocation())){
+                        can = isChestOwner(block, e.getPlayer());
+                    }
                 }
-            }else if(Survie.getInstance().getLockedChests().containsChest(block.getLocation())){
-                can = isChestOwner(block, e.getPlayer());
             }
             if(Survie.getInstance().getLockedChests().containsChest(block.getLocation()) ||
                 (_double != null && Survie.getInstance().getLockedChests().containsChest(_double.getLocation()))) {
                 e.setCancelled(true);
                 if (!can) {
-                    e.getPlayer().sendMessage("§6Lock Chest §7>> §4Erreur §7> §cCe coffre est verrouillé, vous n'avez pas les permissions de le casser.");
+                    e.getPlayer().sendMessage("§6Lock Chest §7>> §4Error §7> §cThis chest is locked, and you don't have permissions to break it.");
                 } else {
                     Survie.getInstance().getLockedChests().removeChest(new WorldLocation(block.getLocation()));
                     if (_double != null)
                         Survie.getInstance().getLockedChests().removeChest(new WorldLocation(_double.getLocation()));
-                    e.getPlayer().sendMessage("§6Lock Chest §7>> §1Info §7> §9Ce coffre est protégé, la protection a été retirée. Recasser pour le détruire.");
+                    e.getPlayer().sendMessage("§6Lock Chest §7>> §1Info §7> §9This chest's protection has been removed. Break it again to break it.");
                 }
             }
             return;
@@ -175,7 +177,7 @@ public class BlockPlaceEvent implements Listener {
             HashMap<Integer, ItemStack> remaining = p.getInventory().addItem(is);
             remaining.values().forEach(dis -> location.getWorld().dropItemNaturally(location, dis));
             if(!remaining.isEmpty() && !Survie.getInstance().disabledActionBar.contains(p.getUniqueId()))
-                p.sendActionBar("§cInventaire plein! §cCertains de vos items ont été drops");;
+                p.sendActionBar("§cInventory full! §cSome items were dropped.");;
         }else{
             location.getWorld().dropItemNaturally(location, is);
         }
@@ -185,7 +187,7 @@ public class BlockPlaceEvent implements Listener {
             HashMap<Integer, ItemStack> remaining = p.getInventory().addItem(is.getItemStack());
             remaining.values().forEach(dis -> location.getWorld().dropItemNaturally(location, dis));
             if(!remaining.isEmpty() && !Survie.getInstance().disabledActionBar.contains(p.getUniqueId()))
-                p.sendActionBar("§cInventaire plein! §cCertains de vos items ont été drops");;
+                p.sendActionBar("§cInventory full! §cSome items were dropped.");
         }else{
             location.getWorld().dropItemNaturally(location, is.getItemStack());
         }
@@ -199,7 +201,7 @@ public class BlockPlaceEvent implements Listener {
             }
             if(!toDrop.isEmpty()) toDrop.forEach(is -> location.getWorld().dropItemNaturally(location, is));
             if(!toDrop.isEmpty() && !Survie.getInstance().disabledActionBar.contains(p.getUniqueId()))
-                p.sendActionBar("§cInventaire plein! §cCertains de vos items ont été drops");
+                p.sendActionBar("§cInventory full! §cSome items were dropped.");
         }else{
             iss.forEach(is -> location.getWorld().dropItemNaturally(location, is.getItemStack()));
         }

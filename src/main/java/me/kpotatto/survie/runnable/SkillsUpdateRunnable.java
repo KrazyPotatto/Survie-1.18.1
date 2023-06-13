@@ -25,7 +25,7 @@ public class SkillsUpdateRunnable extends BukkitRunnable {
         }
         boolean send = !Survie.getInstance().disabledActionBar.contains(uuid);
         Survie.getInstance().skillsLoader.updatePlayer(uuid);
-        if(send) Bukkit.getPlayer(uuid).sendActionBar(Component.text("§aVos données de jeu ont été sauvegardé avec succès!"));
+        if(send) Bukkit.getPlayer(uuid).sendActionBar(Component.text("§aGame data successfully saved!"));
     }
 
 }

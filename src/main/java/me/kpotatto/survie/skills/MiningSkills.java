@@ -24,7 +24,7 @@ public class MiningSkills extends Skills{
     @Override
     public void levelUP() {
         if(this.player.isOnline()){
-            Objects.requireNonNull(this.player.getPlayer()).sendTitle("§aLevel UP", "§aMinage Lvl: §e" + this.level);
+            Objects.requireNonNull(this.player.getPlayer()).sendTitle("§aLevel UP", "§aMining Lvl: §e" + this.level);
             Objects.requireNonNull(this.player.getPlayer()).playSound(this.player.getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 0.5f);
         }
     }

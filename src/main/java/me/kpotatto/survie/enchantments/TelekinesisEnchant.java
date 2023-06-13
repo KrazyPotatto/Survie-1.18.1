@@ -20,7 +20,7 @@ public class TelekinesisEnchant extends CustomEnchantmentWrapper{
 
     @Override
     public @NotNull String getName() {
-        return "telekinesis";
+        return "Telekinesis";
     }
 
     @Override

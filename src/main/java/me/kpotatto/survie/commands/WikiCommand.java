@@ -13,8 +13,8 @@ public class WikiCommand implements @Nullable CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        TextComponent text = new TextComponent("Le wiki est accessible sur: https://delisle.fortiddns.com/wiki");
-        text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://delisle.fortiddns.com/wiki"));
+        TextComponent text = new TextComponent("Le wiki est accessible sur: https://wiki.kpotatto.net");
+        text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://wiki.kpotatto.net"));
         text.setColor(ChatColor.GOLD);
         sender.sendMessage(text);
         return false;

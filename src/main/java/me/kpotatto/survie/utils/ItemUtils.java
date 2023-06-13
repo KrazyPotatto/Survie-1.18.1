@@ -26,7 +26,7 @@ public class ItemUtils {
         ItemStack is = new ItemStack(Material.ENCHANTED_BOOK);
         is.addEnchantment(CustomEnchantments.AUTO_SMELT.getEnchantment(), 1);
         List<Component> lores = new ArrayList<>();
-        lores.add(Component.text("§r§7Autosmelt"));
+        lores.add(Component.text("§r§7Auto-smelt"));
         ItemMeta im = is.getItemMeta();
         im.lore(lores);
         is.setItemMeta(im);
@@ -48,7 +48,7 @@ public class ItemUtils {
         ItemStack is = new ItemStack(Material.ENCHANTED_BOOK);
         is.addEnchantment(CustomEnchantments.VAMPIRISM.getEnchantment(), 1);
         List<Component> lores = new ArrayList<>();
-        lores.add(Component.text("§r§7Vampirisme"));
+        lores.add(Component.text("§r§7Vampirism"));
         ItemMeta im = is.getItemMeta();
         im.lore(lores);
         is.setItemMeta(im);
@@ -59,7 +59,7 @@ public class ItemUtils {
         ItemStack is = new ItemStack(Material.ENCHANTED_BOOK);
         is.addEnchantment(CustomEnchantments.TELEKINESIS.getEnchantment(), 1);
         List<Component> lores = new ArrayList<>();
-        lores.add(Component.text("§r§7Télékinésie"));
+        lores.add(Component.text("§r§7Telekinesis"));
         ItemMeta im = is.getItemMeta();
         im.lore(lores);
         is.setItemMeta(im);

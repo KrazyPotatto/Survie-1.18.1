@@ -20,7 +20,7 @@ public class AutoSmeltEnchant extends CustomEnchantmentWrapper{
 
     @Override
     public @NotNull String getName() {
-        return "Autosmelt";
+        return "Auto-smelt";
     }
 
     @Override

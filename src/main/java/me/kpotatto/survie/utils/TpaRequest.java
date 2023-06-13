@@ -14,7 +14,7 @@ public class TpaRequest{
     }
 
     public TeleportationRequest getTeleportRequest(){
-        return new TeleportationRequest(target.getLocation(), sender, "§6TPA §7>> §2Succès §7> §aVous avez été téléporté à §e"+target.getDisplayName() +"§a!");
+        return new TeleportationRequest(target.getLocation(), sender, "§6TPA §7>> §2Success §7> §aYou were teleported to §e"+target.getDisplayName() +"§a!");
     }
 
     public boolean tick(){
@@ -27,19 +27,19 @@ public class TpaRequest{
     }
 
     public void accept(){
-        target.sendMessage("§6TPA §7>> §2Demande acceptée §7> §e" + sender.getDisplayName() + "§a sera téléporté à vous dans 5 secondes!");
-        sender.sendMessage("§6TPA §7>> §2Demande acceptée §7> §aVous serez téléporté à §e" + target.getDisplayName() + "§a dans 5 secondes!");
+        target.sendMessage("§6TPA §7>> §2TPA Accepted §7> §e" + sender.getDisplayName() + "§a will be teleported to you in 5 seconds!");
+        sender.sendMessage("§6TPA §7>> §3TPA Accepted §7> §aYou will be teleported to §e" + target.getDisplayName() + "§a in 5 seconds!");
         Survie.getInstance().teleportations.put(sender.getUniqueId(), getTeleportRequest());
     }
 
     public void deny(){
-        target.sendMessage("§6TPA §7>> §4Demande refusée §7> §e" + sender.getDisplayName() + "§c ne sera pas téléporté à vous!");
-        sender.sendMessage("§6TPA §7>> §4Demande refusée §7> §cVous ne serez pas téléporté à §e" + target.getDisplayName());
+        target.sendMessage("§6TPA §7>> §4TPA Denied §7> §e" + sender.getDisplayName() + "§c will not be teleported to you!");
+        sender.sendMessage("§6TPA §7>> §4TPA Denied §7> §cYou won't be teleported to §e" + target.getDisplayName());
     }
 
     public void expires(){
-        target.sendMessage("§6TPA §7>> §4Demande expirée §7> §cLa demande de téléportation de §e" + sender.getDisplayName() + "§c a expiré!");
-        sender.sendMessage("§6TPA §7>> §4Demande expirée §7> §cVotre demande de téléportation vers §e" + target.getDisplayName() + "§c a expiré!");
+        target.sendMessage("§6TPA §7>> §4TPA Expired §7> §e" + sender.getDisplayName() + "§c's teleportation request has expired!");
+        sender.sendMessage("§6TPA §7>> §4TPA Expired §7> §cYour teleportation request to §e" + target.getDisplayName() + "§c has expired!");
     }
 
     public Player getTarget(){

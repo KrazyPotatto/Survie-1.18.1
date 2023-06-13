@@ -18,7 +18,7 @@ public class DeathEvent implements Listener {
         Player p = e.getPlayer();
         Location loc = p.getLocation();
         String coords = "§6X: §e" + (int)loc.getX() + " §6Z: §e" + (int)loc.getZ() + " §6Y: §e" + (int)loc.getY();
-        p.sendMessage("§6Mort §7>> §2Coordonnées §7> " + coords);
+        p.sendMessage("§6Death §7>> §2Coordinates §7> " + coords);
 
         /**
          * FOR THE SOULBOUND ENCHANTMENT

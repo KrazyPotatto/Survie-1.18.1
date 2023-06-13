@@ -16,9 +16,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.Inventory;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerInteractEvents implements Listener {
 
@@ -31,13 +29,24 @@ public class PlayerInteractEvents implements Listener {
                 //USER CLICKED ON CHEST
                 Player p = e.getPlayer();
                 if(Survie.getInstance().lockingChestPlayers.containsKey(p.getUniqueId())){
-                    // USER WISHES TO LOCK A CHEST
                     e.setCancelled(true);
-                    addChest(block, p);
+                    if(Survie.getInstance().lockingChestPlayers.get(p.getUniqueId()) == null) {
+                        Optional<AbstractMap.SimpleEntry<UUID, ChestPlayerProfile>> opProfile = getProfile(block.getLocation());
+                        if(opProfile.isPresent()){
+                            ChestPlayerProfile profile = opProfile.get().getValue();
+                            Survie.getInstance().lockingChestPlayers.replace(p.getUniqueId(), profile);
+                            p.sendMessage("§6Lock Chest §7>> §2Success §7> §aThe profile of this chest has been copied.");
+                        } else {
+                            p.sendMessage("§6Lock Chest §7>> §4Error §7> §cThis chest is not locked, cannot copy profile.");
+                        }
+                    } else {
+                        // USER WISHES TO LOCK A CHEST
+                        addChest(block, p);
+                    }
                 } else {
                     if(isChestLocked(block, p)){
                         e.setCancelled(true);
-                        p.sendMessage("§6Lock Chest §7>> §4Erreur §7> §cCe coffre est verrouillé et vous n'avez pas les permissions de l'ouvrir.");
+                        p.sendMessage("§6Lock Chest §7>> §4Error §7> §cThis chest is locked and you do not have permissions to open it.");
                     }
                 }
             }
@@ -64,59 +73,66 @@ public class PlayerInteractEvents implements Listener {
         return isLockedForPlayer(p, block.getLocation());
     }
 
-    private boolean isLockedForPlayer(Player p, Location loc){
-        boolean locked = false;
-        boolean finished = false;
+    private Optional<AbstractMap.SimpleEntry<UUID, ChestPlayerProfile>> getProfile(Location loc){
         if(Survie.getInstance().getLockedChests().containsChest(loc)){
             for(Map.Entry<UUID, List<ChestPlayerProfile>> profiles: Survie.getInstance().getLockedChests().playerProfiles.entrySet()){
                 for(ChestPlayerProfile profile: profiles.getValue()){
                     if(profile.getLocation().equals(new WorldLocation(loc))){
-                        finished = true;
-                        if(profiles.getKey().equals(p.getUniqueId()))
-                            break;
-                        if(profile.isWhitelistMode()){
-                            if(!profile.getAccessList().contains(p.getUniqueId())){
-                                locked = true;
-                                break;
-                            }
-                        }else{
-                            if(profile.getAccessList().contains(p.getUniqueId())){
-                                locked = true;
-                                break;
-                            }
-                        }
+                        return Optional.of(new AbstractMap.SimpleEntry<>(profiles.getKey(), profile));
                     }
                 }
-                if(finished) break;
             }
         }
-        return locked;
+        return Optional.empty();
+    }
+    private boolean isLockedForPlayer(Player p, Location loc){
+        Optional<AbstractMap.SimpleEntry<UUID, ChestPlayerProfile>> opProfile = getProfile(loc);
+        if(!opProfile.isPresent()){
+            return false;
+        }
+        AbstractMap.SimpleEntry<UUID, ChestPlayerProfile> profile = opProfile.get();
+        if(profile.getKey().equals(p.getUniqueId())) return false;
+        if(profile.getValue().isWhitelistMode()){
+            return !profile.getValue().getAccessList().contains(p.getUniqueId());
+        }else{
+            return profile.getValue().getAccessList().contains(p.getUniqueId());
+        }
     }
 
     public void addChest(Block block, Player p){
-        boolean success;
+        boolean success = false;
         if(!Survie.getInstance().getLockedChests().containsChest(block.getLocation())) {
             if(!Survie.getInstance().getLockedChests().playerExists(p.getUniqueId()))
                 Survie.getInstance().getLockedChests().createPlayer(p.getUniqueId());
-            ChestPlayerProfile profile = Survie.getInstance().lockingChestPlayers.get(p.getUniqueId());
+            ChestPlayerProfile profile = Survie.getInstance().lockingChestPlayers.get(p.getUniqueId()).clone();
             profile.setLocation(new WorldLocation(block.getLocation()));
             Survie.getInstance().getLockedChests().addChest(p.getUniqueId(), profile);
             success = true;
         }else{
-            success = false;
+            Optional<AbstractMap.SimpleEntry<UUID, ChestPlayerProfile>> opProfile = getProfile(block.getLocation());
+            if(opProfile.isPresent()) {
+                AbstractMap.SimpleEntry<UUID, ChestPlayerProfile> profile = opProfile.get();
+                if(profile.getKey().equals(p.getUniqueId())) {
+                    Survie.getInstance().getLockedChests().removeChest(profile.getValue().getLocation());
+                    ChestPlayerProfile pp = Survie.getInstance().lockingChestPlayers.get(p.getUniqueId()).clone();
+                    pp.setLocation(new WorldLocation(block.getLocation()));
+                    Survie.getInstance().getLockedChests().addChest(p.getUniqueId(), pp);
+                    success = true;
+                }
+            }
         }
         if (!Survie.getInstance().autoLockingChest.contains(p.getUniqueId())) {
             Survie.getInstance().lockingChestPlayers.remove(p.getUniqueId());
             if(success){
-                p.sendMessage("§6Lock Chest §7>> §2Succès §7> §aLe coffre a été verrouillé avec succès. Le mode protection de coffre a été désactivé.");
+                p.sendMessage("§6Lock Chest §7>> §2Success §7> §aThe chest has been locked, chest protection mode has been disabled.");
             }else{
-                p.sendMessage("§6Lock Chest §7>> §4Erreur §7> §cCe coffre est déjà verrouillé, impossible de le verrouiller. Le mode protection de coffre a été désactivé.");
+                p.sendMessage("§6Lock Chest §7>> §4Error §7> §cThis chest is already locked, cannot override. Chest protection mode has been disabled.");
             }
         }else{
             if(success){
-                p.sendMessage("§6Lock Chest §7>> §2Succès §7> §aLe coffre a été verrouillé avec succès. Le mode protection de coffre est encore actif, vous êtes en mode automatique.");
+                p.sendMessage("§6Lock Chest §7>> §2Success §7> §aThis chest has been locked. Chest protection mode is still active, because you enabled automatic mode.");
             }else{
-                p.sendMessage("§6Lock Chest §7>> §4Erreur §7> §cCe coffre est déjà verrouillé, impossible de le verrouiller. Le mode protection de coffre est encore actif, vous êtes en mode automatique.");
+                p.sendMessage("§6Lock Chest §7>> §4Error §7> §cThis chest is already locked, cannot override. Chest protection mode is still active, because you enabled automatic mode.");
             }
         }
     }

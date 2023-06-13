@@ -15,31 +15,26 @@ public class SpawnCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender s, @NotNull Command cmd, @NotNull String cmds, @NotNull String[] args) {
         if(!(s instanceof Player)) {
-            s.sendMessage("§6Spawn §7>> §4Erreur §7> §cVous devez être un joueur pour exécuter cette commande");
+            s.sendMessage("§6Spawn §7>> §4Error §7> §cYou need to be a player to execute this command");
             return true;
         }
         Player p = (Player) s;
 
-        if(p.getLocation().getWorld() != Bukkit.getWorlds().get(0)){
-            p.sendMessage("§6Spawn §7>> §4Erreur §7> §cVous devez être dans l'overworld pour utiliser cette commande!");
-            return true;
-        }
-
         if(Survie.getInstance().teleportations.containsKey(p.getUniqueId())){
-            p.sendMessage("§6Spawn §7>> §4Erreur §7> §cVous avez une téléportation en cours, impossible de vous téléportez pour le moment.");
+            p.sendMessage("§6Spawn §7>> §4Error §7> §cYou have an outstanding teleportation in progress. Please wait a few moments before teleporting to spawn again.");
             return true;
         }
 
         if(!CooldownUtils.asCooldownExpired(Survie.getInstance().spawnCooldown, p)){
             int timeRemaining = (int)( (Survie.getInstance().spawnCooldown.get(p.getUniqueId()) - System.currentTimeMillis()) / 1000 );
-            p.sendMessage("§6Spawn §7>> §4Erreur §7> §cVous devez attendre encore " + timeRemaining + " secondes avant d'utiliser cette commande.");
+            p.sendMessage("§6Spawn §7>> §4Error §7> §You need to wait " + timeRemaining + " seconds before using this command again.");
             return true;
         }
 
         TeleportationRequest request = new TeleportationRequest(p.getWorld().getSpawnLocation(), p, "§cSpawn §7>> §2Succès §7> §aVous avez été téléportez au spawn!");
         Survie.getInstance().teleportations.put(p.getUniqueId(), request);
         Survie.getInstance().spawnCooldown.put(p.getUniqueId(), System.currentTimeMillis() + 10000);
-        p.sendMessage("§6Spawn §7>> §2Succès §7> §aVotre téléportation commencera dans 5 secondes.");
+        p.sendMessage("§6Spawn §7>> §2Success §7> §aYour teleportation will start in 5 seconds! Please stay still.");
 
         return true;
     }

@@ -14,7 +14,7 @@ public class TpNoCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender s, @NotNull Command cmd, @NotNull String cmds, @NotNull String[] args) {
 
         if(!(s instanceof Player)) {
-            s.sendMessage("§6Spawn §7>> §4Erreur §7> §cVous devez être un joueur pour exécuter cette commande");
+            s.sendMessage("§6Spawn §7>> §4Error §7> §cYou must be a player to use this command!");
             return true;
         }
 
@@ -36,7 +36,7 @@ public class TpNoCommand implements CommandExecutor {
             }
         }
 
-        p.sendMessage("§6TPA §7>> §4Erreur §7> §cVous n'avez pas de requête de téléportation en attente!");
+        p.sendMessage("§6TPA §7>> §4Error §7> §cYou do not have a pending teleportation request!");
         return true;
     }
 

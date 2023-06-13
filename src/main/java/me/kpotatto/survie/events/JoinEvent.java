@@ -36,8 +36,8 @@ public class JoinEvent implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
-        BukkitTask task = Bukkit.getScheduler().runTaskTimer(Survie.getInstance(), new MessageRunnable(e.getPlayer()), 20L, 20L);
-        Survie.getInstance().joinMessageID.put(e.getPlayer().getUniqueId(), task.getTaskId());
+        //BukkitTask task = Bukkit.getScheduler().runTaskTimer(Survie.getInstance(), new MessageRunnable(e.getPlayer()), 20L, 20L);
+        //Survie.getInstance().joinMessageID.put(e.getPlayer().getUniqueId(), task.getTaskId());
 
         if(!Survie.getInstance().skillsLoader.playerExists(e.getPlayer().getUniqueId()))
             Survie.getInstance().skillsLoader.createPlayer(e.getPlayer().getUniqueId(), e.getPlayer().getName());
@@ -77,7 +77,7 @@ class MessageRunnable implements Runnable{
             Bukkit.getScheduler().cancelTask(Survie.getInstance().joinMessageID.get(p.getUniqueId()));
             return;
         }
-        p.sendActionBar("§6Nouvelle commande /skills ! Le wiki a été mis à jour: /wiki");
+        //p.sendActionBar("§6Nouvelle commande /skills ! Le wiki a été mis à jour: /wiki");
         timer--;
     }
 }

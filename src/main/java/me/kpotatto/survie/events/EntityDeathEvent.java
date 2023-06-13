@@ -86,7 +86,7 @@ public class EntityDeathEvent implements Listener {
         if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment())){
             HashMap<Integer, ItemStack> remaining = p.getInventory().addItem(is);
             remaining.values().forEach(dis -> location.getWorld().dropItemNaturally(location, dis));
-            if(!remaining.isEmpty() && !Survie.getInstance().disabledActionBar.contains(p.getUniqueId())) p.sendActionBar("§cInventaire plein! §cCertains de vos items ont été drops");
+            if(!remaining.isEmpty() && !Survie.getInstance().disabledActionBar.contains(p.getUniqueId())) p.sendActionBar("§cInventory full! §cSome items were dropped.");
         }else{
             location.getWorld().dropItemNaturally(location, is);
         }
@@ -99,7 +99,7 @@ public class EntityDeathEvent implements Listener {
                 toDrop.addAll(remaining.values());
             }
             if(!toDrop.isEmpty()) toDrop.forEach(is -> location.getWorld().dropItemNaturally(location, is));
-            if(!toDrop.isEmpty() && !Survie.getInstance().disabledActionBar.contains(p.getUniqueId())) p.sendActionBar("§cInventaire plein! §cCertains de vos items ont été drops");
+            if(!toDrop.isEmpty() && !Survie.getInstance().disabledActionBar.contains(p.getUniqueId())) p.sendActionBar("§cInventory full! §cSome items were dropped.");
         }else{
             iss.forEach(is -> location.getWorld().dropItemNaturally(location, is));
         }

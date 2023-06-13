@@ -54,7 +54,7 @@ public class AnvilEvents implements Listener {
         if(!ItemUtils.isTool(result)) return;
         ItemMeta rm = result.getItemMeta();
         List<Component> lores = rm.lore() == null ? new ArrayList<>() : rm.lore();
-        lores.add(Component.text("§r§7Autosmelt"));
+        lores.add(Component.text("§r§7Auto-smelt"));
         rm.lore(lores);
         result.setItemMeta(rm);
         result.addEnchantment(CustomEnchantments.AUTO_SMELT.getEnchantment(), 1);
@@ -80,7 +80,7 @@ public class AnvilEvents implements Listener {
         if(!ItemUtils.isWeapon(result, true)) return;
         ItemMeta rm = result.getItemMeta();
         List<Component> lores = rm.lore() == null ? new ArrayList<>() : rm.lore();
-        lores.add(Component.text("§r§7Vampirisme"));
+        lores.add(Component.text("§r§7Vampirism"));
         rm.lore(lores);
         result.setItemMeta(rm);
         result.addEnchantment(CustomEnchantments.VAMPIRISM.getEnchantment(), 1);
@@ -93,7 +93,7 @@ public class AnvilEvents implements Listener {
         if(!ItemUtils.isWeapon(result, true) && !ItemUtils.isTool(result, true)) return;
         ItemMeta rm = result.getItemMeta();
         List<Component> lores = rm.lore() == null ? new ArrayList<>() : rm.lore();
-        lores.add(Component.text("§r§7Télékinésie"));
+        lores.add(Component.text("§r§7Telekinesis"));
         rm.lore(lores);
         result.setItemMeta(rm);
         result.addEnchantment(CustomEnchantments.TELEKINESIS.getEnchantment(), 1);
@@ -111,7 +111,7 @@ public class AnvilEvents implements Listener {
         }
         if(e.getInventory().getFirstItem().getItemMeta().hasEnchant(CustomEnchantments.AUTO_SMELT.getEnchantment()) || oldLores.contains(Component.text("§r§7Autosmelt"))){
             rm.addEnchant(CustomEnchantments.AUTO_SMELT.getEnchantment(), 1, true);
-            lores.add(Component.text("§r§7Autosmelt"));
+            lores.add(Component.text("§r§7Auto-smelt"));
         }
         if(e.getInventory().getFirstItem().getItemMeta().hasEnchant(CustomEnchantments.BEHEADING.getEnchantment()) || oldLores.contains(Component.text("§r§7Beheading"))){
             rm.addEnchant(CustomEnchantments.BEHEADING.getEnchantment(), 1, true);
@@ -119,11 +119,11 @@ public class AnvilEvents implements Listener {
         }
         if(e.getInventory().getFirstItem().getItemMeta().hasEnchant(CustomEnchantments.VAMPIRISM.getEnchantment()) || oldLores.contains(Component.text("§r§7Vampirisme"))){
             rm.addEnchant(CustomEnchantments.VAMPIRISM.getEnchantment(), 1, true);
-            lores.add(Component.text("§r§7Vampirisme"));
+            lores.add(Component.text("§r§7Vampirism"));
         }
         if(e.getInventory().getFirstItem().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment()) || oldLores.contains(Component.text("§r§7Télékinésie"))){
             rm.addEnchant(CustomEnchantments.TELEKINESIS.getEnchantment(), 1, true);
-            lores.add(Component.text("§r§7Télékinésie"));
+            lores.add(Component.text("§r§7Telekinesis"));
         }
 
         rm.lore(lores);

@@ -46,4 +46,28 @@ public class WorldLocation {
     public int hashCode() {
         return Objects.hash(worldUUID, x, y, z);
     }
+
+    public UUID getWorldUUID() {
+        return worldUUID;
+    }
+
+    public long getX() {
+        return x;
+    }
+
+    public long getY() {
+        return y;
+    }
+
+    public long getZ() {
+        return z;
+    }
+
+    public float getYaw() {
+        return yaw;
+    }
+
+    public float getPitch() {
+        return pitch;
+    }
 }

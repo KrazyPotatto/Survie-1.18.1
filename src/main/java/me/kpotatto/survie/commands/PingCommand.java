@@ -17,7 +17,7 @@ public class PingCommand implements CommandExecutor {
             //Un joueur utilise la commande
             if(args.length >= 1){
                 if(!isPlayerOnline(args[0])){
-                    s.sendMessage("§6Ping §7>> §4Erreur §7> §cLe joueur spécifié est hors ligne");
+                    s.sendMessage("§6Ping §7>> §4Error §7> §cThe specified player is not online");
                     return true;
                 }
                 p = Bukkit.getPlayerExact(args[0]);
@@ -29,20 +29,20 @@ public class PingCommand implements CommandExecutor {
             //La console utilise la commande
             if(args.length >= 1){
                 if(!isPlayerOnline(args[0])){
-                    s.sendMessage("§6Ping §7>> §4Erreur §7> §cLe joueur spécifié est hors ligne");
+                    s.sendMessage("§6Ping §7>> §4Error §7> §cThe specified player is not online");
                     return true;
                 }
                 p = Bukkit.getPlayerExact(args[0]);
             }else{
-                s.sendMessage("§6Ping §7>> §4Erreur §7> §cVous devez spécifier un joueur");
+                s.sendMessage("§6Ping §7>> §4Error §7> §cYou need to specify a player");
                 return true;
             }
         }
 
         if(same){
-            s.sendMessage("§6Ping §7>> §2Succès §7> §aVotre ping est de §e" + p.getPing() + "§ams.");
+            s.sendMessage("§6Ping §7>> §2Success §7> §aYou have a ping of §e" + p.getPing() + "§ams.");
         }else{
-            s.sendMessage("§6Ping §7>> §2Succès §7> §aLe ping de §e" + p.getDisplayName() + "§a est de §e" + p.getPing() + "§ams.");
+            s.sendMessage("§6Ping §7>> §2Success §7> §e" + p.getDisplayName() + "§a's has a ping of §e" + p.getPing() + "§ams.");
         }
 
         return false;
