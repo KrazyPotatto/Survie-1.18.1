@@ -23,7 +23,7 @@ public class JoinEvent implements Listener {
         this.pl = pl;
     }
 
-    @EventHandler
+    /*@EventHandler
     public void onPreLogin(AsyncPlayerPreLoginEvent e){
         Survie.getInstance().sqlUtils.checkConnection();
         IpLogger ipLogger = Survie.getInstance().ipLogger;
@@ -32,7 +32,7 @@ public class JoinEvent implements Listener {
         }else{
             ipLogger.createPlayer(e.getUniqueId(), e.getAddress().getHostAddress(), true);
         }
-    }
+    }*/
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
@@ -41,12 +41,12 @@ public class JoinEvent implements Listener {
 
         if(!Survie.getInstance().skillsLoader.playerExists(e.getPlayer().getUniqueId()))
             Survie.getInstance().skillsLoader.createPlayer(e.getPlayer().getUniqueId(), e.getPlayer().getName());
-        //BukkitTask task = Bukkit.getScheduler().runTaskTimer(Survie.getInstance(), new SkillsUpdateRunnable(e.getPlayer()), 300 * 20L, 300 * 20L);
-        BukkitTask taks = new SkillsUpdateRunnable(e.getPlayer()).runTaskTimerAsynchronously(Survie.getInstance(), 300 * 20L, 300 * 20L);
-        Survie.getInstance().skillsSaveTaskID.put(e.getPlayer().getUniqueId(), taks.getTaskId());
+        //OLD BukkitTask task = Bukkit.getScheduler().runTaskTimer(Survie.getInstance(), new SkillsUpdateRunnable(e.getPlayer()), 300 * 20L, 300 * 20L);
+        //BukkitTask taks = new SkillsUpdateRunnable(e.getPlayer()).runTaskTimerAsynchronously(Survie.getInstance(), 300 * 20L, 300 * 20L);
+        //Survie.getInstance().skillsSaveTaskID.put(e.getPlayer().getUniqueId(), taks.getTaskId());
     }
 
-    @EventHandler
+    /*@EventHandler
     public void onPlayerLeave(PlayerQuitEvent e){
         int taskID = Survie.getInstance().skillsSaveTaskID.get(e.getPlayer().getUniqueId());
         Bukkit.getScheduler().cancelTask(Survie.getInstance().skillsSaveTaskID.get(e.getPlayer().getUniqueId()));
@@ -58,7 +58,7 @@ public class JoinEvent implements Listener {
         Survie.getInstance().skillsLoader.updatePlayer(e.getPlayer().getUniqueId(), e.getPlayer().getName());
         Survie.getInstance().ipLogger.setOnline(e.getPlayer().getUniqueId(), false);
 
-    }
+    }*/
 
 }
 

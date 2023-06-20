@@ -42,9 +42,10 @@ public final class Survie extends JavaPlugin {
         instance = this;
 
         StartupUtils.startUp(this);
-        sqlUtils = new SQLUtils();
-        skillsLoader = new SkillsLoader(sqlUtils.getConnection(), this);
-        ipLogger = new IpLogger(sqlUtils.getConnection());
+        //sqlUtils = new SQLUtils();
+        //skillsLoader = new SkillsLoader(sqlUtils.getConnection(), this);
+        skillsLoader = new SkillsLoader(null, this);
+        //ipLogger = new IpLogger(sqlUtils.getConnection());
         lockedChests = LockedChests.load(new LockedChests("lockedChests"));
     }
 

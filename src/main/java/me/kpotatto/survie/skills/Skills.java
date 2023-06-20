@@ -23,32 +23,33 @@ public abstract class Skills {
     }
 
     public void addExperience(int amount){
-        if(getLevel() >= 30) return;
+        /*if(getLevel() >= 30) return;
         experience += amount;
         if(level < getLevel()){
             level = getLevel();
             levelUP();
-        }
+        }*/
     }
 
     public void addExperience(){
-        if(getLevel() >= 30) return;
+        /*if(getLevel() >= 30) return;
         experience++;
         if(level < getLevel()){
             level = getLevel();
             levelUP();
-        }
+        }*/
     }
 
     public void removeExperience(int amount){
-        setExperience(getExperience() - amount);
+        //setExperience(getExperience() - amount);
     }
 
     public int getExperience() {
-        return experience;
+        return 0;
+        //return experience;
     }
 
     public void setExperience(int experience) {
-        this.experience = experience;
+        //this.experience = experience;
     }
 }

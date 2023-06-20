@@ -1,5 +1,6 @@
 package me.kpotatto.survie.utils.sql;
 
+import me.kpotatto.survie.Survie;
 import me.kpotatto.survie.skills.FightingSkills;
 import me.kpotatto.survie.skills.MiningSkills;
 import org.bukkit.Bukkit;
@@ -17,7 +18,7 @@ public class SkillsLoader extends SQLLoader{
 
     public SkillsLoader(Connection connection, JavaPlugin pl) {
         super(connection, pl);
-        load(pl);
+        //load(pl);
     }
 
 
@@ -40,7 +41,8 @@ public class SkillsLoader extends SQLLoader{
 
     @Override
     public boolean playerExists(UUID uuid){
-        boolean exists = true;
+        return false;
+        /*boolean exists = true;
         try {
             PreparedStatement sts = connection.prepareStatement("SELECT * FROM skills WHERE uuid = ?");
             sts.setString(1, uuid.toString());
@@ -51,12 +53,17 @@ public class SkillsLoader extends SQLLoader{
         }catch (SQLException e){
             e.printStackTrace();
         }
-        return exists;
+        return exists;*/
     }
 
     @Override
     public void createPlayer(UUID uuid, String username) {
-        try {
+        uuidMiningSkillsHashMap.remove(uuid);
+        uuidFightingSkillsHashMap.remove(uuid);
+        uuidMiningSkillsHashMap.put(uuid, new MiningSkills(0, Bukkit.getOfflinePlayer(uuid)));
+        uuidFightingSkillsHashMap.put(uuid, new FightingSkills(0, Bukkit.getOfflinePlayer(uuid)));
+        return;
+        /*try {
             PreparedStatement sts = connection.prepareStatement("INSERT INTO skills (uuid, username) VALUES(?, ?)");
             sts.setString(1, uuid.toString());
             sts.setString(2, username);
@@ -66,12 +73,13 @@ public class SkillsLoader extends SQLLoader{
             uuidFightingSkillsHashMap.put(uuid, new FightingSkills(0, Bukkit.getOfflinePlayer(uuid)));
         }catch (SQLException e){
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override
     public boolean updatePlayer(UUID uuid) {
-        boolean success = false;
+        return true;
+        /*boolean success = false;
         try {
             if(uuidMiningSkillsHashMap.get(uuid) != null) {
                 PreparedStatement sts = connection.prepareStatement("UPDATE skills SET mining_exp = ?, fighting_exp = ?, last_update = ? WHERE uuid = ?");
@@ -86,11 +94,12 @@ public class SkillsLoader extends SQLLoader{
         }catch (SQLException e){
             e.printStackTrace();
         }
-        return success;
+        return success;*/
     }
 
     public boolean updatePlayer(UUID uuid, String username) {
-        boolean success = false;
+        return true;
+        /*boolean success = false;
         try {
             if(uuidMiningSkillsHashMap.get(uuid) != null) {
                 PreparedStatement sts = connection.prepareStatement("UPDATE skills SET mining_exp = ?, fighting_exp = ?, last_update = ?, username = ? WHERE uuid = ?");
@@ -106,6 +115,6 @@ public class SkillsLoader extends SQLLoader{
         }catch (SQLException e){
             e.printStackTrace();
         }
-        return success;
+        return success;*/
     }
 }

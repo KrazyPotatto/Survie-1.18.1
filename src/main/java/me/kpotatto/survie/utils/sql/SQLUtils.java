@@ -31,9 +31,9 @@ public class SQLUtils {
         try {
             if (connection != null && !connection.isClosed() && !connection.isValid(0)) {
                 connection = null;
-                initializeConnection();
-                Survie.getInstance().skillsLoader.setConnection(this.connection);
-                Survie.getInstance().ipLogger.setConnection(this.connection);
+                //initializeConnection();
+                //Survie.getInstance().skillsLoader.setConnection(this.connection);
+                //Survie.getInstance().ipLogger.setConnection(this.connection);
             }
         }catch (SQLException e){
             e.printStackTrace();
