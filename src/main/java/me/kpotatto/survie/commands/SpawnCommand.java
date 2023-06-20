@@ -31,7 +31,7 @@ public class SpawnCommand implements CommandExecutor {
             return true;
         }
 
-        TeleportationRequest request = new TeleportationRequest(p.getWorld().getSpawnLocation(), p, "§cSpawn §7>> §2Succès §7> §aVous avez été téléportez au spawn!");
+        TeleportationRequest request = new TeleportationRequest(p.getWorld().getSpawnLocation(), p, "§cSpawn §7>> §2Success §7> §aYou were teleported to spawn!");
         Survie.getInstance().teleportations.put(p.getUniqueId(), request);
         Survie.getInstance().spawnCooldown.put(p.getUniqueId(), System.currentTimeMillis() + 10000);
         p.sendMessage("§6Spawn §7>> §2Success §7> §aYour teleportation will start in 5 seconds! Please stay still.");
