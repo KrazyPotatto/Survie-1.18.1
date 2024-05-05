@@ -1,0 +1,6 @@
+database:
+  driver: ''
+  host: ''
+  params: ''
+  user: ''
+  password: ''

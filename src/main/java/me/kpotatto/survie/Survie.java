@@ -39,16 +39,20 @@ public final class Survie extends JavaPlugin {
         // Plugin startup logic
         instance = this;
 
+        // Load config file
+        saveDefaultConfig();
+
+        // Startup Plugin
         StartupUtils.startUp(this);
-        sqlUtils = new SQLUtils();
-        skillsLoader = new SkillsLoader(sqlUtils.getConnection());
+        sqlUtils = new SQLUtils(this);
+        skillsLoader = new SkillsLoader(sqlUtils.getConnection(), this);
         ipLogger = new IpLogger(sqlUtils.getConnection());
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        StartupUtils.shutDown();
+        StartupUtils.shutDown(this);
     }
 
     public static Survie getInstance(){

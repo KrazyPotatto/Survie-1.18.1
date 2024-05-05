@@ -15,8 +15,9 @@ public class TeleportRunnable implements Runnable {
     public void run() {
         for (Map.Entry<UUID, TeleportationRequest> e: Survie.getInstance().teleportations.entrySet())
             if(e.getValue().tick()) Survie.getInstance().teleportations.remove(e.getKey());
-        for (TpaRequest tpa : Survie.getInstance().tpaRequests) if(!tpa.tick()) Survie.getInstance().tpaRequests.remove(tpa);
-        for (TpaRequest tpa : Survie.getInstance().tpaHereRequests) if(!tpa.tick()) Survie.getInstance().tpaHereRequests.remove(tpa);
+
+        Survie.getInstance().tpaRequests.removeIf(tpa -> !tpa.tick());
+        Survie.getInstance().tpaHereRequests.removeIf(tpa -> !tpa.tick());
     }
 
 }

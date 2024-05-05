@@ -10,9 +10,18 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.logging.Level;
+
 public class JoinEvent implements Listener {
+
+    private final JavaPlugin pl;
+
+    public JoinEvent(JavaPlugin pl) {
+        this.pl = pl;
+    }
 
     @EventHandler
     public void onPreLogin(AsyncPlayerPreLoginEvent e){
@@ -31,9 +40,9 @@ public class JoinEvent implements Listener {
         Survie.getInstance().joinMessageID.put(e.getPlayer().getUniqueId(), task.getTaskId());
 
         if(!Survie.getInstance().skillsLoader.playerExists(e.getPlayer().getUniqueId()))
-            Survie.getInstance().skillsLoader.createPlayer(e.getPlayer().getUniqueId());
+            Survie.getInstance().skillsLoader.createPlayer(e.getPlayer().getUniqueId(), e.getPlayer().getName());
         //BukkitTask task = Bukkit.getScheduler().runTaskTimer(Survie.getInstance(), new SkillsUpdateRunnable(e.getPlayer()), 300 * 20L, 300 * 20L);
-        BukkitTask taks = new SkillsUpdateRunnable(e.getPlayer()).runTaskTimerAsynchronously(Survie.getInstance(), 300 * 20L, 300 * 20L);
+        BukkitTask taks = new SkillsUpdateRunnable(e.getPlayer(), this.pl).runTaskTimerAsynchronously(Survie.getInstance(), 300 * 20L, 300 * 20L);
         Survie.getInstance().skillsSaveTaskID.put(e.getPlayer().getUniqueId(), taks.getTaskId());
     }
 
@@ -42,7 +51,7 @@ public class JoinEvent implements Listener {
         int taskID = Survie.getInstance().skillsSaveTaskID.get(e.getPlayer().getUniqueId());
         Bukkit.getScheduler().cancelTask(Survie.getInstance().skillsSaveTaskID.get(e.getPlayer().getUniqueId()));
         if(!Bukkit.getScheduler().isQueued(taskID) && !Bukkit.getScheduler().isCurrentlyRunning(taskID)){
-            System.out.println("Save skills task successfully canceled for player " + e.getPlayer().getDisplayName()+":"+e.getPlayer().getUniqueId().toString());
+            pl.getLogger().log(Level.INFO, "Save skills task successfully canceled for player " + e.getPlayer().getDisplayName()+":"+e.getPlayer().getUniqueId().toString());
         }
         Survie.getInstance().skillsSaveTaskID.remove(e.getPlayer().getUniqueId());
         Survie.getInstance().skillsLoader.updatePlayer(e.getPlayer().getUniqueId());

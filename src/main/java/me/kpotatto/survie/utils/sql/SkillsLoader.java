@@ -3,18 +3,20 @@ package me.kpotatto.survie.utils.sql;
 import me.kpotatto.survie.skills.FightingSkills;
 import me.kpotatto.survie.skills.MiningSkills;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.*;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class SkillsLoader extends SQLLoader{
 
     public HashMap<UUID, MiningSkills> uuidMiningSkillsHashMap = new HashMap<>();
     public HashMap<UUID, FightingSkills> uuidFightingSkillsHashMap = new HashMap<>();
 
-    public SkillsLoader(Connection connection) {
-        super(connection);
+    public SkillsLoader(Connection connection, JavaPlugin pl) {
+        super(connection, pl);
         load();
     }
 
@@ -28,8 +30,8 @@ public class SkillsLoader extends SQLLoader{
                 uuidMiningSkillsHashMap.put(UUID.fromString(rs.getString(1)), new MiningSkills(rs.getInt(2), Bukkit.getOfflinePlayer(UUID.fromString(rs.getString(1)))));
                 uuidFightingSkillsHashMap.put(UUID.fromString(rs.getString(1)), new FightingSkills(rs.getInt(3), Bukkit.getOfflinePlayer(UUID.fromString(rs.getString(1)))));
             }
-            System.out.println("Loaded " + uuidMiningSkillsHashMap.size() + " user mining skills from database");
-            System.out.println("Loaded " + uuidFightingSkillsHashMap.size() + " user fighting skills from database");
+            this.pl.getLogger().log(Level.INFO, "Loaded " + uuidMiningSkillsHashMap.size() + " user mining skills from database");
+            this.pl.getLogger().log(Level.INFO, "Loaded " + uuidFightingSkillsHashMap.size() + " user fighting skills from database");
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -53,10 +55,11 @@ public class SkillsLoader extends SQLLoader{
     }
 
     @Override
-    public void createPlayer(UUID uuid) {
+    public void createPlayer(UUID uuid, String username) {
         try {
-            PreparedStatement sts = connection.prepareStatement("INSERT INTO skills (uuid) VALUES(?)");
+            PreparedStatement sts = connection.prepareStatement("INSERT INTO skills (uuid, username) VALUES(?, ?)");
             sts.setString(1, uuid.toString());
+            sts.setString(2, username);
             sts.executeUpdate();
             sts.close();
             uuidMiningSkillsHashMap.put(uuid, new MiningSkills(0, Bukkit.getOfflinePlayer(uuid)));

@@ -11,6 +11,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Objects;
+import java.util.logging.Level;
 
 public class StartupUtils {
 
@@ -18,52 +20,52 @@ public class StartupUtils {
         registerEvents(pl);
         registerCommands(pl);
         registerRunnables(pl);
-        registerEnchantments();
+        registerEnchantments(pl);
     }
 
     private static void registerEvents(JavaPlugin pl){
         pl.getServer().getPluginManager().registerEvents(new BlockPlaceEvent(), pl);
         pl.getServer().getPluginManager().registerEvents(new DeathEvent(), pl);
-        pl.getServer().getPluginManager().registerEvents(new JoinEvent(), pl);
+        pl.getServer().getPluginManager().registerEvents(new JoinEvent(pl), pl);
         pl.getServer().getPluginManager().registerEvents(new AnvilEvents(), pl);
         pl.getServer().getPluginManager().registerEvents(new EntityDeathEvent(), pl);
     }
 
     private static void registerCommands(JavaPlugin pl){
-        pl.getCommand("spawn").setExecutor(new SpawnCommand());
-        pl.getCommand("tpa").setExecutor(new TpaCommand());
-        pl.getCommand("tpahere").setExecutor(new TpaHereCommand());
-        pl.getCommand("tpyes").setExecutor(new TpYesCommand());
-        pl.getCommand("tpaccept").setExecutor(new TpYesCommand());
-        pl.getCommand("tpno").setExecutor(new TpNoCommand());
-        pl.getCommand("tpdeny").setExecutor(new TpNoCommand());
-        pl.getCommand("ping").setExecutor(new PingCommand());
-        pl.getCommand("wiki").setExecutor(new WikiCommand());
-        pl.getCommand("toggleactionbar").setExecutor(new ToggleActionBarCommand());
-        pl.getCommand("skills").setExecutor(new SkillsCommand());
+        Objects.requireNonNull(pl.getCommand("spawn")).setExecutor(new SpawnCommand());
+        Objects.requireNonNull(pl.getCommand("tpa")).setExecutor(new TpaCommand());
+        Objects.requireNonNull(pl.getCommand("tpahere")).setExecutor(new TpaHereCommand());
+        Objects.requireNonNull(pl.getCommand("tpyes")).setExecutor(new TpYesCommand());
+        Objects.requireNonNull(pl.getCommand("tpaccept")).setExecutor(new TpYesCommand());
+        Objects.requireNonNull(pl.getCommand("tpno")).setExecutor(new TpNoCommand());
+        Objects.requireNonNull(pl.getCommand("tpdeny")).setExecutor(new TpNoCommand());
+        Objects.requireNonNull(pl.getCommand("ping")).setExecutor(new PingCommand());
+        Objects.requireNonNull(pl.getCommand("wiki")).setExecutor(new WikiCommand());
+        Objects.requireNonNull(pl.getCommand("toggleactionbar")).setExecutor(new ToggleActionBarCommand());
+        Objects.requireNonNull(pl.getCommand("skills")).setExecutor(new SkillsCommand());
     }
 
     private static void registerRunnables(JavaPlugin pl){
         Bukkit.getScheduler().runTaskTimer(pl, new TeleportRunnable(), 0L, 20L);
     }
 
-    private static void registerEnchantments(){
-        registerEnchantment(CustomEnchantments.SOULBOUND.getEnchantment());
-        registerEnchantment(CustomEnchantments.AUTO_SMELT.getEnchantment());
-        registerEnchantment(CustomEnchantments.BEHEADING.getEnchantment());
-        registerEnchantment(CustomEnchantments.VAMPIRISM.getEnchantment());
-        registerEnchantment(CustomEnchantments.TELEKINESIS.getEnchantment());
+    private static void registerEnchantments(JavaPlugin pl){
+        registerEnchantment(CustomEnchantments.SOULBOUND.getEnchantment(), pl);
+        registerEnchantment(CustomEnchantments.AUTO_SMELT.getEnchantment(), pl);
+        registerEnchantment(CustomEnchantments.BEHEADING.getEnchantment(), pl);
+        registerEnchantment(CustomEnchantments.VAMPIRISM.getEnchantment(), pl);
+        registerEnchantment(CustomEnchantments.TELEKINESIS.getEnchantment(), pl);
     }
 
-    public static void shutDown(){
-        unregisterEnchantment(CustomEnchantments.SOULBOUND.getEnchantment());
-        unregisterEnchantment(CustomEnchantments.AUTO_SMELT.getEnchantment());
-        unregisterEnchantment(CustomEnchantments.BEHEADING.getEnchantment());
-        unregisterEnchantment(CustomEnchantments.VAMPIRISM.getEnchantment());
-        unregisterEnchantment(CustomEnchantments.TELEKINESIS.getEnchantment());
+    public static void shutDown(JavaPlugin pl){
+        unregisterEnchantment(CustomEnchantments.SOULBOUND.getEnchantment(), pl);
+        unregisterEnchantment(CustomEnchantments.AUTO_SMELT.getEnchantment(), pl);
+        unregisterEnchantment(CustomEnchantments.BEHEADING.getEnchantment(), pl);
+        unregisterEnchantment(CustomEnchantments.VAMPIRISM.getEnchantment(), pl);
+        unregisterEnchantment(CustomEnchantments.TELEKINESIS.getEnchantment(), pl);
     }
 
-    private static void registerEnchantment(Enchantment enchantment){
+    private static void registerEnchantment(Enchantment enchantment, JavaPlugin pl){
         boolean registered = true;
         try{
             Field f = Enchantment.class.getDeclaredField("acceptingNew");
@@ -75,10 +77,10 @@ public class StartupUtils {
             e.printStackTrace();
         }
         if(registered)
-            System.out.println("§2Success §7> §aEnchantment " + enchantment.getName() + " has been registered!");
+            pl.getLogger().log(Level.INFO, "Enchantment " + enchantment.getName() + " has been registered!");
     }
 
-    private static void unregisterEnchantment(Enchantment enchantment){
+    private static void unregisterEnchantment(Enchantment enchantment, JavaPlugin pl){
         boolean unregistered = true;
         try {
             Field keyField = Enchantment.class.getDeclaredField("byKey");
@@ -101,7 +103,7 @@ public class StartupUtils {
             }
         } catch (Exception ignored) { unregistered = false; }
         if(unregistered){
-            System.out.println("§2Success §7> §aEnchantment §e" + enchantment.getName() + "§a has been unregistered!");
+            pl.getLogger().log(Level.INFO, "Enchantment " + enchantment.getName() + " has been unregistered!");
         }
     }
 
