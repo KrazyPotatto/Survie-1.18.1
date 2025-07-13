@@ -13,7 +13,7 @@ public class ItemUtils {
 
     public static ItemStack soulboundBook(){
         ItemStack is = new ItemStack(Material.ENCHANTED_BOOK);
-        is.addEnchantment(CustomEnchantments.SOULBOUND.getEnchantment(), 1);
+        is.addEnchantment(CustomEnchantments.SOULBOUND.enchantment(), 1);
         List<Component> lores = new ArrayList<>();
         lores.add(Component.text("§r§7Soulbound"));
         ItemMeta im = is.getItemMeta();
@@ -24,7 +24,7 @@ public class ItemUtils {
 
     public static ItemStack autosmeltBook(){
         ItemStack is = new ItemStack(Material.ENCHANTED_BOOK);
-        is.addEnchantment(CustomEnchantments.AUTO_SMELT.getEnchantment(), 1);
+        is.addEnchantment(CustomEnchantments.AUTO_SMELT.enchantment(), 1);
         List<Component> lores = new ArrayList<>();
         lores.add(Component.text("§r§7Autosmelt"));
         ItemMeta im = is.getItemMeta();
@@ -35,7 +35,7 @@ public class ItemUtils {
 
     public static ItemStack beheadingBook(){
         ItemStack is = new ItemStack(Material.ENCHANTED_BOOK);
-        is.addEnchantment(CustomEnchantments.BEHEADING.getEnchantment(), 1);
+        is.addEnchantment(CustomEnchantments.BEHEADING.enchantment(), 1);
         List<Component> lores = new ArrayList<>();
         lores.add(Component.text("§r§7Beheading"));
         ItemMeta im = is.getItemMeta();
@@ -46,7 +46,7 @@ public class ItemUtils {
 
     public static ItemStack vampirismBook(){
         ItemStack is = new ItemStack(Material.ENCHANTED_BOOK);
-        is.addEnchantment(CustomEnchantments.VAMPIRISM.getEnchantment(), 1);
+        is.addEnchantment(CustomEnchantments.VAMPIRISM.enchantment(), 1);
         List<Component> lores = new ArrayList<>();
         lores.add(Component.text("§r§7Vampirisme"));
         ItemMeta im = is.getItemMeta();
@@ -57,7 +57,7 @@ public class ItemUtils {
 
     public static ItemStack telekinesisBook(){
         ItemStack is = new ItemStack(Material.ENCHANTED_BOOK);
-        is.addEnchantment(CustomEnchantments.TELEKINESIS.getEnchantment(), 1);
+        is.addEnchantment(CustomEnchantments.TELEKINESIS.enchantment(), 1);
         List<Component> lores = new ArrayList<>();
         lores.add(Component.text("§r§7Télékinésie"));
         ItemMeta im = is.getItemMeta();

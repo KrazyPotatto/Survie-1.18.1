@@ -1,9 +1,13 @@
 package me.kpotatto.survie.events;
 
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
 import me.kpotatto.survie.Survie;
 import me.kpotatto.survie.enchantments.CustomEnchantments;
+import net.kyori.adventure.key.Key;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -95,7 +99,8 @@ public class BlockPlaceEvent implements Listener {
 
         //HAS AUTOSMELT ITEM IN HAND
         if(e.getPlayer().getInventory().getItemInMainHand().getItemMeta() == null) return;
-        if(e.getPlayer().getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.AUTO_SMELT.getEnchantment())){
+        Enchantment autoSmelt = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(Key.key("survie:autosmelt"));
+        if(e.getPlayer().getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.AUTO_SMELT.enchantment())){
             Collection<ItemStack> drops = e.getBlock().getDrops(e.getPlayer().getInventory().getItemInMainHand(), e.getPlayer());
             for(ItemStack is : drops){
                 Optional<ItemStack> furnaceRecipe = getFurnaceRecipe(is);
@@ -113,14 +118,14 @@ public class BlockPlaceEvent implements Listener {
     public void onBlockBreakItemDrop(BlockDropItemEvent e){
         //IF HAS TELEPATHY
         if(e.getPlayer().getInventory().getItemInMainHand().getItemMeta() == null) return;
-        if(e.getPlayer().getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment())){
+        if(e.getPlayer().getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.enchantment())){
             dropItem(e.getBlock().getLocation(), e.getPlayer(), e.getItems());
             e.setCancelled(true);
         }
     }
 
     private void dropItem(Location location, Player p, ItemStack is){
-        if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment())){
+        if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.enchantment())){
             HashMap<Integer, ItemStack> remaining = p.getInventory().addItem(is);
             remaining.values().forEach(dis -> location.getWorld().dropItemNaturally(location, dis));
             if(!remaining.isEmpty() && !Survie.getInstance().disabledActionBar.contains(p.getUniqueId()))
@@ -130,7 +135,7 @@ public class BlockPlaceEvent implements Listener {
         }
     }
     private void dropItem(Location location, Player p, Item is){
-        if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment())){
+        if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.enchantment())){
             HashMap<Integer, ItemStack> remaining = p.getInventory().addItem(is.getItemStack());
             remaining.values().forEach(dis -> location.getWorld().dropItemNaturally(location, dis));
             if(!remaining.isEmpty() && !Survie.getInstance().disabledActionBar.contains(p.getUniqueId()))
@@ -140,7 +145,7 @@ public class BlockPlaceEvent implements Listener {
         }
     }
     private void dropItem(Location location, Player p, Collection<Item> iss){
-        if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment())){
+        if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.enchantment())){
             ArrayList<ItemStack> toDrop = new ArrayList<>();
             for(Item is: iss){
                 HashMap<Integer, ItemStack> remaining = p.getInventory().addItem(is.getItemStack());

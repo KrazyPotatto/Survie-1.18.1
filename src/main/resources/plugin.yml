@@ -1,7 +1,7 @@
 name: Survie
 version: '${project.version}'
 main: me.kpotatto.survie.Survie
-api-version: 1.18
+api-version: 1.21
 prefix: "Survie 1.18.1"
 authors: [ KrazyPotatto ]
 commands:

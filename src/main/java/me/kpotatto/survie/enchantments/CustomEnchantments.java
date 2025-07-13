@@ -1,22 +1,29 @@
 package me.kpotatto.survie.enchantments;
 
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
+import net.kyori.adventure.key.Key;
 import org.bukkit.enchantments.Enchantment;
 
 public enum CustomEnchantments {
 
-    SOULBOUND(new SoulboundEnchant()),
-    AUTO_SMELT(new AutoSmeltEnchant()),
-    BEHEADING(new BeheadingEnchant()),
-    VAMPIRISM(new VampirsmEnchant()),
-    TELEKINESIS(new TelekinesisEnchant());
+    SOULBOUND("survie:soulbound"),
+    AUTO_SMELT("survie:autosmelt"),
+    BEHEADING("survie:beheading"),
+    VAMPIRISM("survie:vampirism"),
+    TELEKINESIS("survie:telekinesis");
 
-    private final CustomEnchantmentWrapper enchant;
-    CustomEnchantments(CustomEnchantmentWrapper enchant){
-        this.enchant = enchant;
+    private final String key;
+    CustomEnchantments(String key){
+        this.key = key;
     }
 
-    public Enchantment getEnchantment(){
-        return enchant;
+    public Enchantment enchantment(){
+        return RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(key());
+    }
+
+    public Key key(){
+        return Key.key(this.key);
     }
 
 }

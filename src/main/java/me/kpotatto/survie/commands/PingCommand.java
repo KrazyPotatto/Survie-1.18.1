@@ -4,13 +4,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class PingCommand implements CommandExecutor {
+public class PingCommand extends BukkitCommand {
+
+    public PingCommand(@NotNull String name) {
+        super(name);
+    }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender s, @NotNull Command cmd, @NotNull String cmds, @NotNull String[] args) {
+    public boolean execute(@NotNull CommandSender s, @NotNull String cmd, @NotNull String[] args) {
         Player p;
         boolean same = false;
         if(s instanceof Player){

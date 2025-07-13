@@ -6,13 +6,18 @@ import me.kpotatto.survie.skills.MiningSkills;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class SkillsCommand implements CommandExecutor {
+public class SkillsCommand extends BukkitCommand {
+
+    public SkillsCommand(String name) {
+        super(name);
+    }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender s, @NotNull Command cmd, @NotNull String cmds, @NotNull String[] args) {
+    public boolean execute(@NotNull CommandSender s, @NotNull String cmds, @NotNull String[] args) {
         if(!(s instanceof Player)){
             s.sendMessage("§cMust be a player to execute this command");
             return true;

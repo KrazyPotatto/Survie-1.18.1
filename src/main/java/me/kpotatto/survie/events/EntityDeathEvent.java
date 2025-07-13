@@ -46,10 +46,10 @@ public class EntityDeathEvent implements Listener {
                     break;
                 case MINECART:
                 case ARMOR_STAND:
-                case MINECART_TNT:
-                case MINECART_CHEST:
-                case MINECART_FURNACE:
-                case MINECART_HOPPER:
+                case TNT_MINECART:
+                case CHEST_MINECART:
+                case FURNACE_MINECART:
+                case HOPPER_MINECART:
                     exp = 0;
                 default:
                     exp = 10;
@@ -58,13 +58,13 @@ public class EntityDeathEvent implements Listener {
 
             //Enchantements Custom
             if(p.getInventory().getItemInMainHand() == null || p.getInventory().getItemInMainHand().getItemMeta() == null) return;
-            if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.VAMPIRISM.getEnchantment()))
+            if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.VAMPIRISM.enchantment()))
                 p.setHealth(Math.min(p.getHealth() + 2, p.getMaxHealth()));
-            if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment())){
+            if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.enchantment())){
                 dropItem(e.getEntity().getLocation(), p, e.getDrops());
                 e.getDrops().clear();
             }
-            if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.BEHEADING.getEnchantment())){
+            if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.BEHEADING.enchantment())){
                 Random random = new Random();
                 int r = random.nextInt(20);
                 if(r != 0) return;
@@ -83,7 +83,7 @@ public class EntityDeathEvent implements Listener {
     }
 
     private void dropItem(Location location, Player p, ItemStack is){
-        if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment())){
+        if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.enchantment())){
             HashMap<Integer, ItemStack> remaining = p.getInventory().addItem(is);
             remaining.values().forEach(dis -> location.getWorld().dropItemNaturally(location, dis));
             if(!remaining.isEmpty() && !Survie.getInstance().disabledActionBar.contains(p.getUniqueId())) p.sendActionBar("§cInventaire plein! §cCertains de vos items ont été drops");
@@ -92,7 +92,7 @@ public class EntityDeathEvent implements Listener {
         }
     }
     private void dropItem(Location location, Player p, Collection<ItemStack> iss){
-        if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment())){
+        if(p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.enchantment())){
             ArrayList<ItemStack> toDrop = new ArrayList<>();
             for(ItemStack is: iss){
                 HashMap<Integer, ItemStack> remaining = p.getInventory().addItem(is);

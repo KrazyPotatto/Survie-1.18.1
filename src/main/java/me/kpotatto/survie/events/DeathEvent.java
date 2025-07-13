@@ -24,7 +24,7 @@ public class DeathEvent implements Listener {
          * FOR THE SOULBOUND ENCHANTMENT
          */
         List<ItemStack> soulboundItems = new ArrayList<>();
-        e.getDrops().stream().filter(is -> is != null && is.getEnchantments().containsKey(CustomEnchantments.SOULBOUND.getEnchantment())).forEach(soulboundItems::add);
+        e.getDrops().stream().filter(is -> is != null && is.getEnchantments().containsKey(CustomEnchantments.SOULBOUND.enchantment())).forEach(soulboundItems::add);
         soulboundItems.forEach(is -> {
             e.getItemsToKeep().add(is);
             e.getDrops().remove(is);

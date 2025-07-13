@@ -18,19 +18,19 @@ public class AnvilEvents implements Listener {
     @EventHandler
     public void onAnvilEvent(PrepareAnvilEvent e){
         if(e.getInventory().getSecondItem() != null &&
-                e.getInventory().getSecondItem().getEnchantments().containsKey(CustomEnchantments.SOULBOUND.getEnchantment()) &&
+                e.getInventory().getSecondItem().getEnchantments().containsKey(CustomEnchantments.SOULBOUND.enchantment()) &&
                 e.getInventory().getSecondItem().getType().equals(Material.ENCHANTED_BOOK)) addSoulbound(e);
         if(e.getInventory().getSecondItem() != null &&
-                e.getInventory().getSecondItem().getEnchantments().containsKey(CustomEnchantments.AUTO_SMELT.getEnchantment()) &&
+                e.getInventory().getSecondItem().getEnchantments().containsKey(CustomEnchantments.AUTO_SMELT.enchantment()) &&
                 e.getInventory().getSecondItem().getType().equals(Material.ENCHANTED_BOOK)) addAutosmelt(e);
         if(e.getInventory().getSecondItem() != null &&
-                e.getInventory().getSecondItem().getEnchantments().containsKey(CustomEnchantments.BEHEADING.getEnchantment()) &&
+                e.getInventory().getSecondItem().getEnchantments().containsKey(CustomEnchantments.BEHEADING.enchantment()) &&
                 e.getInventory().getSecondItem().getType().equals(Material.ENCHANTED_BOOK)) addBeheading(e);
         if(e.getInventory().getSecondItem() != null &&
-                e.getInventory().getSecondItem().getEnchantments().containsKey(CustomEnchantments.VAMPIRISM.getEnchantment()) &&
+                e.getInventory().getSecondItem().getEnchantments().containsKey(CustomEnchantments.VAMPIRISM.enchantment()) &&
                 e.getInventory().getSecondItem().getType().equals(Material.ENCHANTED_BOOK)) addVampirism(e);
         if(e.getInventory().getSecondItem() != null &&
-                e.getInventory().getSecondItem().getEnchantments().containsKey(CustomEnchantments.TELEKINESIS.getEnchantment()) &&
+                e.getInventory().getSecondItem().getEnchantments().containsKey(CustomEnchantments.TELEKINESIS.enchantment()) &&
                 e.getInventory().getSecondItem().getType().equals(Material.ENCHANTED_BOOK)) addTelekinesis(e);
         if(e.getInventory().getFirstItem() != null && e.getInventory().getResult() != null) keepCustomEnchantments(e);
 
@@ -44,7 +44,7 @@ public class AnvilEvents implements Listener {
         lores.add(Component.text("§r§7Soulbound"));
         rm.lore(lores);
         result.setItemMeta(rm);
-        result.addEnchantment(CustomEnchantments.SOULBOUND.getEnchantment(), 1);
+        result.addEnchantment(CustomEnchantments.SOULBOUND.enchantment(), 1);
         e.setResult(result);
         e.getInventory().setRepairCost(35);
     }
@@ -57,7 +57,7 @@ public class AnvilEvents implements Listener {
         lores.add(Component.text("§r§7Autosmelt"));
         rm.lore(lores);
         result.setItemMeta(rm);
-        result.addEnchantment(CustomEnchantments.AUTO_SMELT.getEnchantment(), 1);
+        result.addEnchantment(CustomEnchantments.AUTO_SMELT.enchantment(), 1);
         e.setResult(result);
         e.getInventory().setRepairCost(15);
     }
@@ -70,7 +70,7 @@ public class AnvilEvents implements Listener {
         lores.add(Component.text("§r§7Beheading"));
         rm.lore(lores);
         result.setItemMeta(rm);
-        result.addEnchantment(CustomEnchantments.BEHEADING.getEnchantment(), 1);
+        result.addEnchantment(CustomEnchantments.BEHEADING.enchantment(), 1);
         e.setResult(result);
         e.getInventory().setRepairCost(25);
     }
@@ -83,7 +83,7 @@ public class AnvilEvents implements Listener {
         lores.add(Component.text("§r§7Vampirisme"));
         rm.lore(lores);
         result.setItemMeta(rm);
-        result.addEnchantment(CustomEnchantments.VAMPIRISM.getEnchantment(), 1);
+        result.addEnchantment(CustomEnchantments.VAMPIRISM.enchantment(), 1);
         e.setResult(result);
         e.getInventory().setRepairCost(10);
     }
@@ -96,7 +96,7 @@ public class AnvilEvents implements Listener {
         lores.add(Component.text("§r§7Télékinésie"));
         rm.lore(lores);
         result.setItemMeta(rm);
-        result.addEnchantment(CustomEnchantments.TELEKINESIS.getEnchantment(), 1);
+        result.addEnchantment(CustomEnchantments.TELEKINESIS.enchantment(), 1);
         e.setResult(result);
         e.getInventory().setRepairCost(10);
     }
@@ -105,24 +105,24 @@ public class AnvilEvents implements Listener {
         ItemStack result = e.getResult();
         ItemMeta rm = result.getItemMeta();
         List<Component> oldLores = rm.lore() != null ? rm.lore() : new ArrayList<>();
-        if(e.getInventory().getFirstItem().getItemMeta().hasEnchant(CustomEnchantments.SOULBOUND.getEnchantment()) || oldLores.contains(Component.text("§r§7Soulbound"))){
-            rm.addEnchant(CustomEnchantments.SOULBOUND.getEnchantment(), 1, true);
+        if(e.getInventory().getFirstItem().getItemMeta().hasEnchant(CustomEnchantments.SOULBOUND.enchantment()) || oldLores.contains(Component.text("§r§7Soulbound"))){
+            rm.addEnchant(CustomEnchantments.SOULBOUND.enchantment(), 1, true);
             lores.add(Component.text("§r§7Soulbound"));
         }
-        if(e.getInventory().getFirstItem().getItemMeta().hasEnchant(CustomEnchantments.AUTO_SMELT.getEnchantment()) || oldLores.contains(Component.text("§r§7Autosmelt"))){
-            rm.addEnchant(CustomEnchantments.AUTO_SMELT.getEnchantment(), 1, true);
+        if(e.getInventory().getFirstItem().getItemMeta().hasEnchant(CustomEnchantments.AUTO_SMELT.enchantment()) || oldLores.contains(Component.text("§r§7Autosmelt"))){
+            rm.addEnchant(CustomEnchantments.AUTO_SMELT.enchantment(), 1, true);
             lores.add(Component.text("§r§7Autosmelt"));
         }
-        if(e.getInventory().getFirstItem().getItemMeta().hasEnchant(CustomEnchantments.BEHEADING.getEnchantment()) || oldLores.contains(Component.text("§r§7Beheading"))){
-            rm.addEnchant(CustomEnchantments.BEHEADING.getEnchantment(), 1, true);
+        if(e.getInventory().getFirstItem().getItemMeta().hasEnchant(CustomEnchantments.BEHEADING.enchantment()) || oldLores.contains(Component.text("§r§7Beheading"))){
+            rm.addEnchant(CustomEnchantments.BEHEADING.enchantment(), 1, true);
             lores.add(Component.text("§r§7Beheading"));
         }
-        if(e.getInventory().getFirstItem().getItemMeta().hasEnchant(CustomEnchantments.VAMPIRISM.getEnchantment()) || oldLores.contains(Component.text("§r§7Vampirisme"))){
-            rm.addEnchant(CustomEnchantments.VAMPIRISM.getEnchantment(), 1, true);
+        if(e.getInventory().getFirstItem().getItemMeta().hasEnchant(CustomEnchantments.VAMPIRISM.enchantment()) || oldLores.contains(Component.text("§r§7Vampirisme"))){
+            rm.addEnchant(CustomEnchantments.VAMPIRISM.enchantment(), 1, true);
             lores.add(Component.text("§r§7Vampirisme"));
         }
-        if(e.getInventory().getFirstItem().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.getEnchantment()) || oldLores.contains(Component.text("§r§7Télékinésie"))){
-            rm.addEnchant(CustomEnchantments.TELEKINESIS.getEnchantment(), 1, true);
+        if(e.getInventory().getFirstItem().getItemMeta().hasEnchant(CustomEnchantments.TELEKINESIS.enchantment()) || oldLores.contains(Component.text("§r§7Télékinésie"))){
+            rm.addEnchant(CustomEnchantments.TELEKINESIS.enchantment(), 1, true);
             lores.add(Component.text("§r§7Télékinésie"));
         }
 

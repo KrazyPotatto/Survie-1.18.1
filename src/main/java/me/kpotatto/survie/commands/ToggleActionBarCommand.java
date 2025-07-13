@@ -4,13 +4,18 @@ import me.kpotatto.survie.Survie;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class ToggleActionBarCommand implements CommandExecutor {
+public class ToggleActionBarCommand extends BukkitCommand {
+
+    public ToggleActionBarCommand(String name) {
+        super(name);
+    }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender s, @NotNull Command cmd, @NotNull String cmds, @NotNull String[] args) {
+    public boolean execute(@NotNull CommandSender s, @NotNull String cmds, @NotNull String[] args) {
         if(!(s instanceof Player)){
             s.sendMessage("§6Toggle ActionBar §7>> §4Erreur §7> §cVous devez être un joueur pour exécuter cette commande.");
             return true;

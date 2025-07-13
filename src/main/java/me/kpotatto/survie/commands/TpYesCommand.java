@@ -5,13 +5,18 @@ import me.kpotatto.survie.utils.TpaRequest;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class TpYesCommand implements CommandExecutor {
+public class TpYesCommand extends BukkitCommand {
+
+    public TpYesCommand(@NotNull String name) {
+        super(name);
+    }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender s, @NotNull Command cmd, @NotNull String cmds, @NotNull String[] args) {
+    public boolean execute(@NotNull CommandSender s, @NotNull String cmds, @NotNull String[] args) {
 
         if(!(s instanceof Player)) {
             s.sendMessage("§6Spawn §7>> §4Erreur §7> §cVous devez être un joueur pour exécuter cette commande");
