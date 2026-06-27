@@ -26,7 +26,6 @@ public class StartupUtils {
         pl.getServer().getPluginManager().registerEvents(new BlockPlaceEvent(), pl);
         pl.getServer().getPluginManager().registerEvents(new DeathEvent(), pl);
         pl.getServer().getPluginManager().registerEvents(new JoinEvent(pl), pl);
-        pl.getServer().getPluginManager().registerEvents(new AnvilEvents(), pl);
         pl.getServer().getPluginManager().registerEvents(new EntityDeathEvent(), pl);
     }
 
